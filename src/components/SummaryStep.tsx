@@ -208,11 +208,11 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                   size="lg"
                   className="flex items-center gap-2 w-full sm:w-auto border-tanween-secondary text-tanween-primary"
                 >
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowLeft className="w-4 h-4" />
                   العودة للتعديل
                 </Button>
 
-                <div className="flex gap-4">
+                <div className="flex gap-2">
                   <Button
                     onClick={() => onExport('json')}
                     type="button"
@@ -234,6 +234,17 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                     <FileText className="w-4 h-4" />
                     تصدير Excel
                   </Button>
+
+                  <Button
+                    onClick={() => window.print()}
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
+                  >
+                    <FileText className="w-4 h-4" />
+                    طباعة كـ PDF
+                  </Button>
                 </div>
 
                 <Button
@@ -242,7 +253,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                   className="flex items-center gap-2 w-full sm:w-auto bg-tanween-primary hover:bg-tanween-primary/90"
                 >
                   <Save className="w-4 h-4" />
-                  حفظ وإرسال للإيميل التالي: info@tanween.com
+                  حفظ وإرسال إلى: info@tanween.net
                 </Button>
               </div>
             </form>
@@ -279,9 +290,9 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
               <span>📱</span>
               مساعدة على الواتساب
             </a>
-             <div className="text-center text-sm text-gray-600">
+             <div className="text-center text-sm text-white">
                <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
-               <p>رقم هاتف الشركة: 11-4349-963+</p>
+               <p>رقم هاتف الشركة: +963-11-4349</p>
              </div>
           </div>
         </div>

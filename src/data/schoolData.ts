@@ -135,7 +135,7 @@ export const schoolSetupSteps: StepData[] = [
     multiSelect: true,
     allowOther: true,
     options: [
-      { id: 'national_curriculum', label: 'منهاج وطني', labelEn: 'National Curriculum', icon: '🇯🇴' },
+      { id: 'national_curriculum', label: 'منهاج وطني', labelEn: 'National Curriculum', icon: '🏛️' },
       { id: 'international_curriculum', label: 'منهاج دولي', labelEn: 'International Curriculum', icon: '🌐' },
     ]
   },
@@ -243,16 +243,16 @@ export const schoolSetupSteps: StepData[] = [
       },
       { 
         id: 'academic_year_name', 
-        label: 'تسمية العام الدراسي', 
-        labelEn: 'Academic Year Name', 
+        label: 'العام الدراسي', 
+        labelEn: 'Academic Year', 
         type: 'select',
         options: [
           { id: '2025-2026', label: '2025-2026', labelEn: '2025-2026' },
           { id: '2026-2027', label: '2026-2027', labelEn: '2026-2027' },
-          { id: '2027-2028', label: '2027-2028', labelEn: '2027-2028' },
-          { id: 'custom', label: 'تسمية مخصصة', labelEn: 'Custom Name' }
+          { id: '2027-2028', label: '2027-2028', labelEn: '2027-2028' }
         ]
       },
+      { id: 'custom_year_name', label: 'تسمية مخصصة للعام', labelEn: 'Custom Year Name', type: 'text' },
       { id: 'academic_year_start', label: 'تاريخ بداية العام الدراسي', labelEn: 'Academic Year Start Date', type: 'date', required: true },
       { id: 'academic_year_end', label: 'تاريخ نهاية العام الدراسي', labelEn: 'Academic Year End Date', type: 'date', required: true }
     ],
@@ -271,10 +271,10 @@ export const schoolSetupSteps: StepData[] = [
     multiSelect: true,
     allowOther: true,
     options: [
-      { id: 'semester_1', label: 'الفصل الأول (2025-09-01 إلى 2026-01-15)', labelEn: 'First Semester (2025-09-01 to 2026-01-15)', icon: '📚' },
-      { id: 'midterm_break', label: 'العطلة الانتصافية (2026-01-16 إلى 2026-01-31)', labelEn: 'Midterm Break (2026-01-16 to 2026-01-31)', icon: '🏖️' },
-      { id: 'semester_2', label: 'الفصل الثاني (2026-02-01 إلى 2026-05-31)', labelEn: 'Second Semester (2026-02-01 to 2026-05-31)', icon: '📖' },
-      { id: 'summer_activities', label: 'دورة الأنشطة الصيفية (2026-06-01 إلى 2026-08-15)', labelEn: 'Summer Activities Course (2026-06-01 to 2026-08-15)', icon: '☀️' }
+      { id: 'semester_1', label: 'الفصل الأول', labelEn: 'First Semester', icon: '📚', description: '2025-09-01 إلى 2026-01-15' },
+      { id: 'midterm_break', label: 'العطلة الانتصافية', labelEn: 'Midterm Break', icon: '🏖️', description: '2026-01-16 إلى 2026-01-31' },
+      { id: 'semester_2', label: 'الفصل الثاني', labelEn: 'Second Semester', icon: '📖', description: '2026-02-01 إلى 2026-05-31' },
+      { id: 'summer_activities', label: 'دورة الأنشطة الصيفية', labelEn: 'Summer Activities Course', icon: '☀️', description: '2026-06-01 إلى 2026-08-15' }
     ]
   },
   {
@@ -289,7 +289,7 @@ export const schoolSetupSteps: StepData[] = [
     multiSelect: true,
     allowOther: true,
     options: [
-      { id: 'mothers_day', label: 'عيد الأم (2026-03-21)', labelEn: 'Mother\'s Day (2026-03-21)', icon: '👩' },
+      { id: 'mothers_day', label: 'عيد الأم', labelEn: 'Mother\'s Day', icon: '👩', description: '2026-03-21' },
       { id: 'evacuation_day', label: 'عيد الجلاء (2026-04-17)', labelEn: 'Evacuation Day (2026-04-17)', icon: '🇸🇾' },
       { id: 'labor_day', label: 'عيد العمال (2026-05-01)', labelEn: 'Labor Day (2026-05-01)', icon: '⚒️' },
       { id: 'martyrs_day', label: 'عيد الشهداء (2026-05-06)', labelEn: 'Martyrs Day (2026-05-06)', icon: '🏴' },
@@ -350,7 +350,7 @@ export const schoolSetupSteps: StepData[] = [
     description: 'تعريف المهارات التي يتم تقييمها من قبل المدرسين داخل النظام',
     descriptionEn: 'Define skills that are assessed by teachers within the system',
     icon: '🎯',
-    color: 'red',
+    color: 'green',
     multiSelect: true,
     allowOther: true,
     options: [
@@ -394,7 +394,7 @@ export const schoolSetupSteps: StepData[] = [
     description: 'تعريف الهوايات والاهتمامات التي يتم التركيز عليها من قبل إدارة المدرسة ضمن إطار العملية التعليمية',
     descriptionEn: 'Define hobbies and interests that are focused on by school administration within the educational process framework',
     icon: '🎨',
-    color: 'pink',
+    color: 'green',
     multiSelect: true,
     allowOther: true,
     options: [

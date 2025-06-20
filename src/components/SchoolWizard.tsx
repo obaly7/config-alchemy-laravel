@@ -281,7 +281,7 @@ const SchoolWizard = () => {
             size="lg"
             className="flex items-center gap-2"
           >
-            <ArrowRight className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4" />
             السابق
           </Button>
 
@@ -312,7 +312,7 @@ const SchoolWizard = () => {
               className="flex items-center gap-2"
             >
               التالي
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4" />
             </Button>
           )}
         </div>
