@@ -316,6 +316,25 @@ const SchoolWizard = () => {
             </Button>
           )}
         </div>
+
+        {/* Footer with WhatsApp and Company Info */}
+        <div className="border-t border-tanween-secondary/20 pt-8 mt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a 
+              href="https://wa.me/963958555801" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              <span>📱</span>
+              مساعدة على الواتساب
+            </a>
+            <div className="text-center text-sm text-gray-600">
+              <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
+              <p>رقم هاتف الشركة: 11-4349-963+</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

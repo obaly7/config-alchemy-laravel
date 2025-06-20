@@ -169,7 +169,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-tanween-primary mb-2">البريد الإلكتروني لإرسال النتائج</label>
+                  <label className="block text-sm font-medium text-tanween-primary mb-2">البريد الإلكتروني الخاص بالشخص المسؤول</label>
                   <input 
                     name="email"
                     type="email" 
@@ -223,7 +223,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                   className="flex items-center gap-2 w-full sm:w-auto bg-tanween-primary hover:bg-tanween-primary/90"
                 >
                   <Save className="w-4 h-4" />
-                  إرسال للإيميل وحفظ
+                  حفظ وإرسال للإيميل التالي: info@tanween.com
                 </Button>
               </div>
             </form>
@@ -262,7 +262,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
             </a>
             <div className="text-center text-sm text-gray-600">
               <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
-              <p>رقم هاتف الشركة: 11-4349-963+</p>
+              <p>رقم هاتف الشركة: 011-4349</p>
             </div>
           </div>
         </div>

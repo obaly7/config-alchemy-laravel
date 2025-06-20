@@ -240,50 +240,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
             )}
           </div>
 
-          {/* Custom Option Input */}
-          {step.allowOther && showCustomInput && (
-            <div className="mb-6 p-4 bg-tanween-primary/5 rounded-lg border-2 border-tanween-primary/20">
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  placeholder="اكتب خيارك المخصص..."
-                  value={customOption}
-                  onChange={(e) => setCustomOption(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right"
-                  dir="rtl"
-                  onKeyPress={(e) => e.key === 'Enter' && handleCustomOptionAdd()}
-                />
-                <Button 
-                  onClick={handleCustomOptionAdd}
-                  disabled={!customOption.trim()}
-                  className="bg-tanween-primary hover:bg-tanween-primary/90"
-                >
-                  إضافة
-                </Button>
-                <Button 
-                  onClick={() => setShowCustomInput(false)}
-                  variant="outline"
-                  className="border-tanween-secondary text-tanween-secondary"
-                >
-                  إلغاء
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Add Other Option Button */}
-          {step.allowOther && !showCustomInput && (
-            <div className="mb-6">
-              <Button
-                onClick={() => setShowCustomInput(true)}
-                variant="outline"
-                className="w-full border-2 border-dashed border-tanween-secondary/50 text-tanween-primary hover:bg-tanween-primary/5 hover:border-tanween-primary"
-              >
-                <span className="ml-2">➕</span>
-                إضافة خيار آخر
-              </Button>
-            </div>
-          )}
 
           {/* Select All Button for Multiple Selection */}
           {step.multiSelect && step.options.length > 5 && (
@@ -360,6 +316,51 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
               );
             })}
           </div>
+
+          {/* Custom Option Input */}
+          {step.allowOther && showCustomInput && (
+            <div className="mt-6 p-4 bg-tanween-primary/5 rounded-lg border-2 border-tanween-primary/20">
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  placeholder="اكتب خيارك المخصص..."
+                  value={customOption}
+                  onChange={(e) => setCustomOption(e.target.value)}
+                  className="flex-1 px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right"
+                  dir="rtl"
+                  onKeyPress={(e) => e.key === 'Enter' && handleCustomOptionAdd()}
+                />
+                <Button 
+                  onClick={handleCustomOptionAdd}
+                  disabled={!customOption.trim()}
+                  className="bg-tanween-primary hover:bg-tanween-primary/90"
+                >
+                  إضافة
+                </Button>
+                <Button 
+                  onClick={() => setShowCustomInput(false)}
+                  variant="outline"
+                  className="border-tanween-secondary text-tanween-secondary"
+                >
+                  إلغاء
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Add Other Option Button */}
+          {step.allowOther && !showCustomInput && (
+            <div className="mt-6">
+              <Button
+                onClick={() => setShowCustomInput(true)}
+                variant="outline"
+                className="w-full border-2 border-dashed border-tanween-secondary/50 text-tanween-primary hover:bg-tanween-primary/5 hover:border-tanween-primary"
+              >
+                <span className="ml-2">➕</span>
+                إضافة خيار آخر
+              </Button>
+            </div>
+          )}
 
           {/* Selected Summary */}
           {selectedValues.length > 0 && step.options && (
