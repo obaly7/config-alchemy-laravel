@@ -133,8 +133,8 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'buildings',
     stepNumber: 2,
-    title: 'الخطوة الثانية: الأبنية والقاعات - 2-1 الأبنية',
-    titleEn: 'Step 2: Buildings and Halls - 2-1 Buildings',
+    title: 'الخطوة الثانية: الأبنية والقاعات الأبنية',
+    titleEn: 'Step 2: Buildings and Halls Buildings',
     description: 'سيتم تعريف مرافق المدرسة من أبنية وقاعات - أدخل أسماء المباني',
     descriptionEn: 'Define school facilities from buildings and halls - Enter building names',
     icon: '🏢',
@@ -154,8 +154,8 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'facilities',
     stepNumber: 3,
-    title: 'الخطوة 2-2: القاعات والمرافق',
-    titleEn: 'Step 2-2: Halls and Facilities',
+    title: 'الخطوة القاعات والمرافق',
+    titleEn: 'Step: Halls and Facilities',
     description: 'القاعات والمرافق (يمكن اختيار عدة خيارات) - كل خيار سيتم ربطه باسم المبنى من الخطوة السابقة',
     descriptionEn: 'Halls and facilities (multiple choices allowed) - Each option will be linked to building name from previous step',
     icon: '🏛️',
