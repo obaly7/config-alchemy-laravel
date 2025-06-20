@@ -252,9 +252,9 @@ export const schoolSetupSteps: StepData[] = [
           { id: '2027-2028', label: '2027-2028', labelEn: '2027-2028' }
         ]
       },
-      { id: 'custom_year_name', label: 'تسمية مخصصة للعام', labelEn: 'Custom Year Name', type: 'text' },
       { id: 'academic_year_start', label: 'تاريخ بداية العام الدراسي', labelEn: 'Academic Year Start Date', type: 'date', required: true },
-      { id: 'academic_year_end', label: 'تاريخ نهاية العام الدراسي', labelEn: 'Academic Year End Date', type: 'date', required: true }
+      { id: 'academic_year_end', label: 'تاريخ نهاية العام الدراسي', labelEn: 'Academic Year End Date', type: 'date', required: true },
+      { id: 'custom_year_name', label: 'تسمية مخصصة للعام', labelEn: 'Custom Year Name', type: 'text' }
     ],
     multiSelect: false,
     allowOther: true
@@ -285,7 +285,7 @@ export const schoolSetupSteps: StepData[] = [
     description: 'تحديد العطل الرسمية والأعياد والتواريخ المميزة',
     descriptionEn: 'Define official holidays, celebrations and special dates',
     icon: '🎉',
-    color: 'red',
+    color: 'green',
     multiSelect: true,
     allowOther: true,
     options: [

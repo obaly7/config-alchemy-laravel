@@ -85,7 +85,7 @@ const SchoolWizard = () => {
     });
   };
 
-  const handleExportData = (format: 'json' | 'excel') => {
+  const handleExportData = (format: 'json' | 'excel' | 'pdf') => {
     if (format === 'json') {
       const dataStr = JSON.stringify(wizardData, null, 2);
       const dataBlob = new Blob([dataStr], { type: 'application/json' });
@@ -99,11 +99,13 @@ const SchoolWizard = () => {
       URL.revokeObjectURL(url);
     } else if (format === 'excel') {
       handleExportToExcel();
+    } else if (format === 'pdf') {
+      window.print();
     }
     
     toast({
       title: "تم التصدير",
-      description: `تم تصدير البيانات بصيغة ${format === 'json' ? 'JSON' : 'Excel'}`
+      description: `تم تصدير البيانات بصيغة ${format === 'json' ? 'JSON' : format === 'excel' ? 'Excel' : 'PDF'}`
     });
   };
 
@@ -170,25 +172,28 @@ const SchoolWizard = () => {
   return (
     <div className="min-h-screen tanween-gradient p-4">
       <div className="max-w-6xl mx-auto">
+        {/* Timer - Top Corner */}
+        <div className="fixed top-4 left-4 z-50 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+          <span className="text-white font-medium text-sm">
+            ⏱️ {elapsedMinutes.toString().padStart(2, '0')}:{elapsedSeconds.toString().padStart(2, '0')}
+          </span>
+        </div>
+
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="text-6xl mb-4">✨</div>
-          <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
+        <div className="text-center mb-6">
+          <div className="text-4xl mb-3">✨</div>
+          <h1 className="text-4xl font-bold text-white mb-3 drop-shadow-lg">
             تنوين
           </h1>
-          <h2 className="text-2xl font-semibold text-white/90 mb-4">
+          <p className="text-lg text-white/90 mb-2 font-medium italic">
+            Driving Impact in EdTech
+          </p>
+          <h2 className="text-xl font-semibold text-white/90 mb-3">
             معالج إعداد بيانات المدرسة التفاعلي
           </h2>
-          <p className="text-xl text-white/80 mb-4">
+          <p className="text-lg text-white/80">
             مرحباً بك! سنقوم معاً بإعداد بيانات مدرستك خطوة بخطوة بطريقة سهلة وممتعة فلنبدأ
           </p>
-          
-          {/* Timer */}
-          <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 inline-block">
-            <span className="text-white font-medium">
-              ⏱️ الوقت المستغرق: {elapsedMinutes.toString().padStart(2, '0')}:{elapsedSeconds.toString().padStart(2, '0')}
-            </span>
-          </div>
         </div>
 
         {/* Progress Section */}
@@ -281,7 +286,7 @@ const SchoolWizard = () => {
             size="lg"
             className="flex items-center gap-2"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4" />
             السابق
           </Button>
 
@@ -312,13 +317,13 @@ const SchoolWizard = () => {
               className="flex items-center gap-2"
             >
               التالي
-              <ArrowRight className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4" />
             </Button>
           )}
         </div>
 
         {/* Footer with WhatsApp and Company Info */}
-        <div className="border-t border-tanween-secondary/20 pt-8 mt-8">
+        <div className="border-t border-white/20 pt-8 mt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <a 
               href="https://wa.me/963958555801" 
@@ -329,9 +334,28 @@ const SchoolWizard = () => {
               <span>📱</span>
               مساعدة على الواتساب
             </a>
-            <div className="text-center text-sm text-gray-600">
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://www.facebook.com/tanweenapp" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-blue-300 transition-colors"
+              >
+                📘 فيسبوك
+              </a>
+              <a 
+                href="https://www.instagram.com/tanweenapp/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-pink-300 transition-colors"
+              >
+                📷 انستغرام
+              </a>
+            </div>
+            <div className="text-center text-sm text-white">
               <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
-              <p>رقم هاتف الشركة: 11-4349-963+</p>
+              <p>رقم هاتف الشركة: +963-11-4349</p>
+              <p>الموقع الإلكتروني: <a href="https://www.tanween.net/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">www.tanween.net</a></p>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ interface SummaryStepProps {
   wizardData: WizardData;
   onEdit: (stepIndex: number) => void;
   onSave: () => void;
-  onExport: (format: 'json' | 'excel') => void;
+  onExport: (format: 'json' | 'excel' | 'pdf') => void;
   onSendEmail: (userInfo: {name: string, phone: string, email: string}) => void;
   onBack: () => void;
 }
@@ -152,10 +152,86 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
 
         <Separator className="my-8" />
 
-        {/* User Information Form */}
-        <Card className="mb-8 bg-tanween-primary/5 border-tanween-primary/20">
+        {/* Instructions */}
+        <Card className="mb-8 bg-blue-50 border-blue-200">
           <CardContent className="pt-6">
-            <h4 className="font-semibold text-tanween-primary mb-4 text-xl">معلومات الشخص المسؤول</h4>
+            <h4 className="font-semibold text-blue-900 mb-3">💡 خطوات ما بعد الحفظ:</h4>
+            <ul className="text-blue-800 space-y-2 text-sm">
+              <li>• يمكنك تصدير البيانات بصيغة JSON للاستخدام في التطبيقات</li>
+              <li>• استخدم خيار تصدير Excel لمشاركة البيانات مع الفريق</li>
+              <li>• يمكنك العودة وتعديل أي قسم في أي وقت</li>
+              <li>• تأكد من مراجعة جميع البيانات قبل الحفظ النهائي</li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        {/* School Setup Rating */}
+        <Card className="mb-8 bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+          <CardContent className="pt-6">
+            <h4 className="font-semibold text-green-900 mb-4 text-xl text-center">تقييم سهولة إعداد المدرسة</h4>
+            <p className="text-green-800 text-center mb-4">كيف تقيم سهولة استخدام هذا المعالج؟</p>
+            <div className="flex justify-center gap-2 mb-4">
+              {[1,2,3,4,5,6,7,8,9,10].map(num => (
+                <button
+                  key={num}
+                  type="button"
+                  className="w-10 h-10 rounded-full border-2 border-green-300 hover:bg-green-200 hover:border-green-500 transition-colors flex items-center justify-center font-semibold text-green-700"
+                >
+                  {num}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-green-600 text-center">1 = صعب جداً، 10 = سهل جداً</p>
+          </CardContent>
+        </Card>
+
+        {/* School Images Upload */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Card className="bg-purple-50 border-purple-200">
+            <CardContent className="pt-6">
+              <h4 className="font-semibold text-purple-900 mb-4 text-center">شعار المدرسة</h4>
+              <div className="border-2 border-dashed border-purple-300 rounded-lg p-6 text-center">
+                <div className="text-4xl mb-2">🏫</div>
+                <p className="text-purple-700 mb-2">انقر لرفع شعار المدرسة</p>
+                <input type="file" accept="image/*" className="hidden" />
+                <Button variant="outline" className="border-purple-300 text-purple-700">
+                  اختيار ملف
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-orange-50 border-orange-200">
+            <CardContent className="pt-6">
+              <h4 className="font-semibold text-orange-900 mb-4 text-center">صورة توضيحية للمدرسة</h4>
+              <div className="border-2 border-dashed border-orange-300 rounded-lg p-6 text-center">
+                <div className="text-4xl mb-2">🖼️</div>
+                <p className="text-orange-700 mb-2">انقر لرفع صورة توضيحية</p>
+                <input type="file" accept="image/*" className="hidden" />
+                <Button variant="outline" className="border-orange-300 text-orange-700">
+                  اختيار ملف
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Additional Notes */}
+        <Card className="mb-8 bg-yellow-50 border-yellow-200">
+          <CardContent className="pt-6">
+            <h4 className="font-semibold text-yellow-900 mb-4">ملاحظات إضافية</h4>
+            <textarea 
+              className="w-full px-3 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-right min-h-[100px]"
+              placeholder="أضف أي ملاحظات أو تفاصيل إضافية حول المدرسة..."
+              dir="rtl"
+            />
+          </CardContent>
+        </Card>
+
+        {/* User Information Form */}
+        <Card className="mb-8 bg-green-50 border-green-200">
+          <CardContent className="pt-6">
+            <h4 className="font-semibold text-green-900 mb-4 text-xl">معلومات الشخص المسؤول</h4>
             <form onSubmit={(e) => {
               e.preventDefault();
               const formData = new FormData(e.currentTarget);
@@ -168,32 +244,32 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
             }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-tanween-primary mb-2">الاسم الكامل</label>
+                  <label className="block text-sm font-medium text-green-900 mb-2">الاسم الكامل</label>
                   <input 
                     name="name"
                     type="text" 
                     required
-                    className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right" 
+                    className="w-full px-3 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-right bg-white" 
                     dir="rtl"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-tanween-primary mb-2">رقم الهاتف</label>
+                  <label className="block text-sm font-medium text-green-900 mb-2">رقم الهاتف</label>
                   <input 
                     name="phone"
                     type="tel" 
                     required
-                    className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right" 
+                    className="w-full px-3 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-right bg-white" 
                     dir="rtl"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-tanween-primary mb-2">البريد الإلكتروني الخاص بالشخص المسؤول</label>
+                  <label className="block text-sm font-medium text-green-900 mb-2">البريد الإلكتروني الخاص بالشخص المسؤول</label>
                   <input 
                     name="email"
                     type="email" 
                     required
-                    className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right" 
+                    className="w-full px-3 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-right bg-white" 
                     dir="rtl"
                   />
                 </div>
@@ -201,16 +277,16 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button
-                  onClick={onBack}
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  className="flex items-center gap-2 w-full sm:w-auto border-tanween-secondary text-tanween-primary"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  العودة للتعديل
-                </Button>
+                  <Button
+                    onClick={onBack}
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    className="flex items-center gap-2 w-full sm:w-auto border-green-300 text-green-700"
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                    العودة للتعديل
+                  </Button>
 
                 <div className="flex gap-2">
                   <Button
@@ -218,7 +294,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                     type="button"
                     variant="outline"
                     size="lg"
-                    className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
+                    className="flex items-center gap-2 border-green-300 text-green-700"
                   >
                     <FileJson className="w-4 h-4" />
                     تصدير JSON
@@ -229,28 +305,28 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                     type="button"
                     variant="outline"
                     size="lg"
-                    className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
+                    className="flex items-center gap-2 border-green-300 text-green-700"
                   >
                     <FileText className="w-4 h-4" />
                     تصدير Excel
                   </Button>
 
                   <Button
-                    onClick={() => window.print()}
+                    onClick={() => onExport('pdf')}
                     type="button"
                     variant="outline"
                     size="lg"
-                    className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
+                    className="flex items-center gap-2 border-green-300 text-green-700"
                   >
                     <FileText className="w-4 h-4" />
-                    طباعة كـ PDF
+                    تصدير كـ PDF
                   </Button>
                 </div>
 
                 <Button
                   type="submit"
                   size="lg"
-                  className="flex items-center gap-2 w-full sm:w-auto bg-tanween-primary hover:bg-tanween-primary/90"
+                  className="flex items-center gap-2 w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white"
                 >
                   <Save className="w-4 h-4" />
                   حفظ وإرسال إلى: info@tanween.net
@@ -260,17 +336,28 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
           </CardContent>
         </Card>
 
+        {/* Elapsed Time Display */}
+        <Card className="mb-8 bg-blue-50 border-blue-200">
+          <CardContent className="pt-6 text-center">
+            <div className="text-3xl mb-3">⏱️</div>
+            <h4 className="text-xl font-bold text-blue-900 mb-2">الوقت المستغرق في الإعداد</h4>
+            <p className="text-2xl font-bold text-blue-700">
+              سيتم عرض الوقت المستغرق هنا
+            </p>
+          </CardContent>
+        </Card>
+
         {/* Thank You Message */}
-        <Card className="mb-8 bg-gradient-to-r from-tanween-primary/10 to-tanween-secondary/10 border-tanween-primary/30">
+        <Card className="mb-8 bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
           <CardContent className="pt-6 text-center">
             <div className="text-6xl mb-4">🎉</div>
-            <h3 className="text-2xl font-bold text-tanween-primary mb-3">شكراً لكم من شركة تنوين</h3>
-            <p className="text-tanween-secondary text-lg mb-4">
+            <h3 className="text-2xl font-bold text-green-900 mb-3">شكراً لكم من شركة تنوين</h3>
+            <p className="text-green-800 text-lg mb-4">
               نتمنى لمؤسستكم التعليمية كل التوفيق والنجاح في رحلتها التعليمية
             </p>
             <Button 
               onClick={() => window.location.reload()}
-              className="bg-tanween-primary hover:bg-tanween-primary/90 text-white px-8 py-3"
+              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3"
               size="lg"
             >
               بدء تسجيل جديد (إعداد مدرسة جديدة)
@@ -279,7 +366,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
         </Card>
 
         {/* Footer */}
-        <div className="border-t border-tanween-secondary/20 pt-8 mt-8">
+        <div className="border-t border-white/20 pt-8 mt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <a 
               href="https://wa.me/963958555801" 
@@ -290,25 +377,31 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
               <span>📱</span>
               مساعدة على الواتساب
             </a>
-             <div className="text-center text-sm text-white">
-               <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
-               <p>رقم هاتف الشركة: +963-11-4349</p>
-             </div>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://www.facebook.com/tanweenapp" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-blue-300 transition-colors"
+              >
+                📘 فيسبوك
+              </a>
+              <a 
+                href="https://www.instagram.com/tanweenapp/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-pink-300 transition-colors"
+              >
+                📷 انستغرام
+              </a>
+            </div>
+            <div className="text-center text-sm text-white">
+              <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
+              <p>رقم هاتف الشركة: +963-11-4349</p>
+              <p>الموقع الإلكتروني: <a href="https://www.tanween.net/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">www.tanween.net</a></p>
+            </div>
           </div>
         </div>
-
-        {/* Instructions */}
-        <Card className="mt-8 bg-blue-50 border-blue-200">
-          <CardContent className="pt-6">
-            <h4 className="font-semibold text-blue-900 mb-3">💡 خطوات ما بعد الحفظ:</h4>
-            <ul className="text-blue-800 space-y-2 text-sm">
-              <li>• يمكنك تصدير البيانات بصيغة JSON للاستخدام في التطبيقات</li>
-              <li>• استخدم خيار تصدير Excel لمشاركة البيانات مع الفريق</li>
-              <li>• يمكنك العودة وتعديل أي قسم في أي وقت</li>
-              <li>• تأكد من مراجعة جميع البيانات قبل الحفظ النهائي</li>
-            </ul>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
