@@ -154,7 +154,7 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'facilities',
     stepNumber: 3,
-    title: 'الخطوة القاعات والمرافق',
+    title: 'الخطوة الثالثة: القاعات والمرافق',
     titleEn: 'Step: Halls and Facilities',
     description: 'القاعات والمرافق (يمكن اختيار عدة خيارات) - كل خيار سيتم ربطه باسم المبنى من الخطوة السابقة',
     descriptionEn: 'Halls and facilities (multiple choices allowed) - Each option will be linked to building name from previous step',
@@ -198,7 +198,7 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'academic_year',
     stepNumber: 4,
-    title: 'الخطوة الثالثة: العام الدراسي والعطل والتواريخ المميزة',
+    title: 'الخطوة الرابعة: العام الدراسي والعطل والتواريخ المميزة',
     titleEn: 'Step 3: Academic Year, Holidays and Special Dates',
     description: 'هنا يتم تعريف المعلومات الرئيسية ذات الصلة بالتقويم المدرسي',
     descriptionEn: 'Here we define the main information related to the school calendar',
@@ -262,7 +262,7 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'grade_levels',
     stepNumber: 5,
-    title: 'الخطوة الرابعة: المراحل والمستويات الدراسية',
+    title: 'الخطوة الخامسة: المراحل والمستويات الدراسية',
     titleEn: 'Step 4: Educational Stages and Grade Levels',
     description: 'تحديد المراحل الدراسية (مثل الابتدائية) والصفوف (مثل الصف الثالث)',
     descriptionEn: 'Define educational stages (like elementary) and grades (like third grade)',
@@ -295,7 +295,7 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'skills',
     stepNumber: 6,
-    title: 'الخطوة الخامسة: المهارات الأساسية للتقييم',
+    title: 'الخطوة السادسة: المهارات الأساسية للتقييم',
     titleEn: 'Step 5: Basic Skills for Assessment',
     description: 'تعريف المهارات التي يتم تقييمها من قبل المدرسين داخل النظام',
     descriptionEn: 'Define skills that are assessed by teachers within the system',
@@ -339,7 +339,7 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'hobbies',
     stepNumber: 7,
-    title: 'الخطوة السادسة: الهوايات والاهتمامات لدى الطلاب',
+    title: 'الخطوة السابعة: الهوايات والاهتمامات لدى الطلاب',
     titleEn: 'Step 6: Student Hobbies and Interests',
     description: 'تعريف الهوايات والاهتمامات التي يتم التركيز عليها من قبل إدارة المدرسة ضمن إطار العملية التعليمية',
     descriptionEn: 'Define hobbies and interests that are focused on by school administration within the educational process framework',
@@ -387,7 +387,7 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'behavioral_notes',
     stepNumber: 8,
-    title: 'الخطوة السابعة: الملاحظات السلوكية والأخلاقية',
+    title: 'الخطوة الثامنة: الملاحظات السلوكية والأخلاقية',
     titleEn: 'Step 7: Behavioral and Ethical Notes',
     description: 'تحديد الملاحظات الإيجابية والسلبية التي يتم تسجيلها في النظام من قبل الكادر التعليمي',
     descriptionEn: 'Define positive and negative notes that are recorded in the system by educational staff',
@@ -454,7 +454,7 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'disciplinary_actions',
     stepNumber: 9,
-    title: 'الخطوة الثامنة: الإجراءات',
+    title: 'الخطوة التاسعة: الإجراءات',
     titleEn: 'Step 8: Disciplinary Actions',
     description: 'تحديد الإجراءات (الإيجابية والسلبية) التي يمكن اتخاذها بناءً على سلوك الطالب',
     descriptionEn: 'Define actions (positive and negative) that can be taken based on student behavior',
@@ -514,7 +514,7 @@ export const schoolSetupSteps: StepData[] = [
   {
     id: 'class_cancellation_reasons',
     stepNumber: 10,
-    title: 'الخطوة التاسعة: أسباب إلغاء الحصص',
+    title: 'الخطوة العاشرة: أسباب إلغاء الحصص',
     titleEn: 'Step 9: Class Cancellation Reasons',
     description: 'تحديد الأسباب المعتمدة التي يمكن تسجيلها عند إلغاء أي حصة',
     descriptionEn: 'Define approved reasons that can be recorded when canceling any class',
