@@ -138,7 +138,7 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
 
       case 'textarea':
         return (
-          <div key={field.id} className="space-y-2">
+          <div key={field.id} className="space-y-2 md:col-span-2">
             <Label htmlFor={field.id} className="text-tanween-primary font-medium flex items-center gap-2">
               {field.label} {field.required && <span className="text-red-500">*</span>}
             </Label>
@@ -147,7 +147,7 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
               value={value}
               onChange={(e) => handleFieldChange(field.id, e.target.value)}
               placeholder={field.label}
-              className="text-right min-h-[100px]"
+              className="text-right min-h-[120px]"
               dir="rtl"
               required={field.required}
             />
@@ -275,8 +275,8 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
                   key={option.id}
                   className={`p-4 cursor-pointer transition-all duration-200 border-2 ${
                     isSelected 
-                      ? colors.selected 
-                      : colors.card
+                      ? 'border-green-500 bg-green-50 shadow-lg' 
+                      : 'border-gray-200 bg-white hover:border-gray-300'
                   } hover:shadow-md`}
                   onClick={() => handleOptionToggle(option.id)}
                 >

@@ -19,6 +19,7 @@ interface SummaryStepProps {
 
 const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack, startTime }: SummaryStepProps) => {
   const [currentTime, setCurrentTime] = useState(Date.now());
+  const [setupRating, setSetupRating] = useState<number | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -179,15 +180,19 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
         <Card className="mb-8 bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
           <CardContent className="pt-6">
             <h4 className="font-semibold text-green-900 mb-4 text-xl text-center">تقييم سهولة إعداد المدرسة</h4>
-            <p className="text-green-800 text-center mb-4">كيف تقيم سهولة استخدام هذا المعالج؟</p>
+            <p className="text-green-800 text-center mb-4">من 1 إلى 5، كيف تقيم سهولة استخدام هذا المعالج؟</p>
             <div className="flex justify-center gap-4 mb-4">
               {[1,2,3,4,5].map(num => (
                 <button
                   key={num}
                   type="button"
-                  className="w-12 h-12 rounded-full border-2 border-green-300 hover:bg-green-200 hover:border-green-500 transition-colors flex items-center justify-center font-semibold text-green-700 cursor-pointer"
+                  className={`w-12 h-12 rounded-full border-2 transition-colors flex items-center justify-center font-semibold cursor-pointer ${
+                    setupRating === num 
+                      ? 'border-green-500 bg-green-500 text-white shadow-lg' 
+                      : 'border-green-300 text-green-700 hover:bg-green-200 hover:border-green-500'
+                  }`}
                   onClick={() => {
-                    // Here you could handle the rating selection
+                    setSetupRating(num);
                     console.log(`تم اختيار التقييم: ${num}`);
                   }}
                 >
