@@ -11,10 +11,11 @@ interface SummaryStepProps {
   onEdit: (stepIndex: number) => void;
   onSave: () => void;
   onExport: (format: 'json' | 'excel') => void;
+  onSendEmail: (userInfo: {name: string, phone: string, email: string}) => void;
   onBack: () => void;
 }
 
-const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onBack }: SummaryStepProps) => {
+const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack }: SummaryStepProps) => {
   const getStepData = (stepId: string) => {
     return wizardData[stepId] || [];
   };
@@ -136,66 +137,98 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onBack }: SummarySt
         <Card className="mb-8 bg-tanween-primary/5 border-tanween-primary/20">
           <CardContent className="pt-6">
             <h4 className="font-semibold text-tanween-primary mb-4 text-xl">معلومات الشخص المسؤول</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-tanween-primary mb-2">الاسم الكامل</label>
-                <input type="text" className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary" />
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const userInfo = {
+                name: formData.get('name') as string,
+                phone: formData.get('phone') as string,
+                email: formData.get('email') as string
+              };
+              onSendEmail(userInfo);
+            }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-tanween-primary mb-2">الاسم الكامل</label>
+                  <input 
+                    name="name"
+                    type="text" 
+                    required
+                    className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right" 
+                    dir="rtl"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-tanween-primary mb-2">رقم الهاتف</label>
+                  <input 
+                    name="phone"
+                    type="tel" 
+                    required
+                    className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right" 
+                    dir="rtl"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-tanween-primary mb-2">البريد الإلكتروني لإرسال النتائج</label>
+                  <input 
+                    name="email"
+                    type="email" 
+                    required
+                    className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right" 
+                    dir="rtl"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-tanween-primary mb-2">رقم الهاتف</label>
-                <input type="tel" className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary" />
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button
+                  onClick={onBack}
+                  type="button"
+                  variant="outline"
+                  size="lg"
+                  className="flex items-center gap-2 w-full sm:w-auto border-tanween-secondary text-tanween-primary"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  العودة للتعديل
+                </Button>
+
+                <div className="flex gap-4">
+                  <Button
+                    onClick={() => onExport('json')}
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
+                  >
+                    <FileJson className="w-4 h-4" />
+                    تصدير JSON
+                  </Button>
+
+                  <Button
+                    onClick={() => onExport('excel')}
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
+                  >
+                    <FileText className="w-4 h-4" />
+                    تصدير Excel
+                  </Button>
+                </div>
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="flex items-center gap-2 w-full sm:w-auto bg-tanween-primary hover:bg-tanween-primary/90"
+                >
+                  <Save className="w-4 h-4" />
+                  إرسال للإيميل وحفظ
+                </Button>
               </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-tanween-primary mb-2">البريد الإلكتروني لإرسال النتائج</label>
-                <input type="email" className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary" />
-              </div>
-            </div>
+            </form>
           </CardContent>
         </Card>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-          <Button
-            onClick={onBack}
-            variant="outline"
-            size="lg"
-            className="flex items-center gap-2 w-full sm:w-auto border-tanween-secondary text-tanween-primary"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            العودة للتعديل
-          </Button>
-
-          <div className="flex gap-4">
-            <Button
-              onClick={() => onExport('json')}
-              variant="outline"
-              size="lg"
-              className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
-            >
-              <FileJson className="w-4 h-4" />
-              تصدير JSON
-            </Button>
-
-            <Button
-              onClick={() => onExport('excel')}
-              variant="outline"
-              size="lg"
-              className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
-            >
-              <FileText className="w-4 h-4" />
-              تصدير Excel
-            </Button>
-          </div>
-
-          <Button
-            onClick={onSave}
-            size="lg"
-            className="flex items-center gap-2 w-full sm:w-auto bg-tanween-primary hover:bg-tanween-primary/90"
-          >
-            <Save className="w-4 h-4" />
-            إرسال للإيميل وحفظ
-          </Button>
-        </div>
 
         {/* Thank You Message */}
         <Card className="mb-8 bg-gradient-to-r from-tanween-primary/10 to-tanween-secondary/10 border-tanween-primary/30">
@@ -206,6 +239,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onBack }: SummarySt
               نتمنى لمؤسستكم التعليمية كل التوفيق والنجاح في رحلتها التعليمية
             </p>
             <Button 
+              onClick={() => window.location.reload()}
               className="bg-tanween-primary hover:bg-tanween-primary/90 text-white px-8 py-3"
               size="lg"
             >

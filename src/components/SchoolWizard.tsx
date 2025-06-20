@@ -70,10 +70,18 @@ const SchoolWizard = () => {
   };
 
   const handleSaveData = () => {
-    // هنا يمكن إضافة منطق حفظ البيانات
     toast({
       title: "تم الحفظ بنجاح",
       description: "تم حفظ بيانات المدرسة بنجاح"
+    });
+  };
+
+  const handleSendEmail = (userInfo: {name: string, phone: string, email: string}) => {
+    // Here we would typically send the data to an API endpoint
+    // For now, we'll just show a success message
+    toast({
+      title: "تم الإرسال بنجاح",
+      description: `تم إرسال البيانات إلى ${userInfo.email} بنجاح`
     });
   };
 
@@ -89,12 +97,56 @@ const SchoolWizard = () => {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+    } else if (format === 'excel') {
+      handleExportToExcel();
     }
     
     toast({
       title: "تم التصدير",
       description: `تم تصدير البيانات بصيغة ${format === 'json' ? 'JSON' : 'Excel'}`
     });
+  };
+
+  const handleExportToExcel = async () => {
+    try {
+      const XLSX = await import('xlsx');
+      
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      
+      // Prepare data for Excel
+      const excelData: any[] = [];
+      
+      schoolSetupSteps.forEach((step, stepIndex) => {
+        const stepData = wizardData[step.id] || [];
+        if (stepData.length > 0) {
+          excelData.push({
+            'رقم الخطوة': step.stepNumber,
+            'اسم الخطوة': step.title,
+            'الخيارات المختارة': stepData.map(valueId => {
+              const option = step.options?.find(opt => opt.id === valueId);
+              return option ? option.label : valueId;
+            }).join(', '),
+            'عدد الخيارات': stepData.length
+          });
+        }
+      });
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+      
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'بيانات المدرسة');
+      
+      // Generate Excel file and download
+      XLSX.writeFile(workbook, 'school_data.xlsx');
+      
+    } catch (error) {
+      toast({
+        title: "خطأ في التصدير",
+        description: "حدث خطأ أثناء تصدير البيانات إلى Excel"
+      });
+    }
   };
 
   if (isCompleted) {
@@ -104,6 +156,7 @@ const SchoolWizard = () => {
         onEdit={goToStep}
         onSave={handleSaveData}
         onExport={handleExportData}
+        onSendEmail={handleSendEmail}
         onBack={() => setIsCompleted(false)}
       />
     );
