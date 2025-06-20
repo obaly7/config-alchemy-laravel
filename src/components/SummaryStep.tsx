@@ -27,6 +27,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
   const getStepData = (stepId: string) => {
     return wizardData[stepId] || [];
   };
@@ -200,10 +201,14 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                 </button>
               ))}
             </div>
+            {setupRating && (
+              <p className="text-center text-sm text-gray-600">
+                شكراً لك! تقييمك: {setupRating} من 5
+              </p>
+            )}
             <p className="text-xs text-green-600 text-center">1 = صعب جداً، 5 = سهل جداً</p>
           </CardContent>
         </Card>
-
 
         {/* Additional Notes */}
         <Card className="mb-8 bg-yellow-50 border-yellow-200">
@@ -390,7 +395,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
             <div className="text-center text-sm text-white">
               <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
               <p>رقم هاتف الشركة: +963-11-4349</p>
-              <p>الموقع الإلكتروني: <a href="https://www.tanween.net/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">www.tanween.net</a></p>
+              <p className="hover:text-blue-200">الموقع الإلكتروني: <a href="https://www.tanween.net/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">www.tanween.net</a></p>
             </div>
           </div>
         </div>
