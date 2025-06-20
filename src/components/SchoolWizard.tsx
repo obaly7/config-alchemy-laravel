@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -16,7 +16,17 @@ const SchoolWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [wizardData, setWizardData] = useState<WizardData>({});
   const [isCompleted, setIsCompleted] = useState(false);
+  const [startTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(Date.now());
   const { toast } = useToast();
+
+  // Timer effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const totalSteps = schoolSetupSteps.length;
   const progress = ((currentStep + 1) / totalSteps) * 100;
@@ -101,32 +111,56 @@ const SchoolWizard = () => {
 
   const currentStepData = schoolSetupSteps[currentStep];
 
+  const elapsedMinutes = Math.floor((currentTime - startTime) / 60000);
+  const elapsedSeconds = Math.floor(((currentTime - startTime) % 60000) / 1000);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+    <div className="min-h-screen tanween-gradient p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            🏫 معالج إعداد بيانات المدرسة
+          <div className="text-6xl mb-4">✨</div>
+          <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
+            تنوين
           </h1>
-          <p className="text-xl text-gray-600">
-            اتبع الخطوات لإعداد بيانات مدرستك بطريقة منظمة
+          <h2 className="text-2xl font-semibold text-white/90 mb-4">
+            معالج إعداد بيانات المدرسة التفاعلي
+          </h2>
+          <p className="text-xl text-white/80 mb-4">
+            مرحباً بك! سنقوم معاً بإعداد بيانات مدرستك خطوة بخطوة بطريقة سهلة وممتعة
           </p>
+          
+          {/* Timer */}
+          <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 inline-block">
+            <span className="text-white font-medium">
+              ⏱️ الوقت المستغرق: {elapsedMinutes.toString().padStart(2, '0')}:{elapsedSeconds.toString().padStart(2, '0')}
+            </span>
+          </div>
         </div>
 
         {/* Progress Section */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-white/95 backdrop-blur-sm border-white/20 shadow-xl">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <span>{currentStepData.icon}</span>
-                الخطوة {currentStep + 1} من {totalSteps}
+              <CardTitle className="flex items-center gap-2 text-tanween-primary">
+                <span className="text-2xl">{currentStepData.icon}</span>
+                <div>
+                  <div className="text-lg font-bold">الخطوة {currentStep + 1} من {totalSteps}</div>
+                  <div className="text-sm text-tanween-secondary font-medium">
+                    {currentStepData.title}
+                  </div>
+                </div>
               </CardTitle>
-              <span className="text-sm text-gray-500">
-                {Math.round(progress)}% مكتمل
-              </span>
+              <div className="text-left">
+                <span className="text-sm text-tanween-primary font-medium">
+                  {Math.round(progress)}% مكتمل
+                </span>
+                <div className="text-xs text-gray-500 mt-1">
+                  {totalSteps - currentStep - 1} خطوة متبقية
+                </div>
+              </div>
             </div>
-            <Progress value={progress} className="mt-2" />
+            <Progress value={progress} className="mt-3 h-3 bg-tanween-secondary/20" />
           </CardHeader>
         </Card>
 
@@ -159,15 +193,24 @@ const SchoolWizard = () => {
         </div>
 
         {/* Current Step Content */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-2xl">
-              <span className="text-3xl">{currentStepData.icon}</span>
-              {currentStepData.title}
+        <Card className="mb-8 bg-white shadow-xl border-0">
+          <CardHeader className="bg-gradient-to-l from-tanween-secondary/10 to-tanween-primary/10">
+            <CardTitle className="flex items-center gap-3 text-2xl text-tanween-primary">
+              <span className="text-4xl">{currentStepData.icon}</span>
+              <div>
+                <div className="text-2xl font-bold">{currentStepData.title}</div>
+                <p className="text-tanween-secondary text-lg font-normal mt-1">
+                  {currentStepData.description}
+                </p>
+              </div>
             </CardTitle>
-            <p className="text-gray-600 text-lg">{currentStepData.description}</p>
+            <div className="mt-4 p-3 bg-tanween-primary/5 rounded-lg border-r-4 border-tanween-primary">
+              <p className="text-tanween-primary text-sm font-medium">
+                💡 نصيحة: يمكنك اختيار {currentStepData.multiSelect ? 'عدة خيارات' : 'خيار واحد'} في هذه الخطوة
+              </p>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <StepContent
               step={currentStepData}
               selectedValues={wizardData[currentStepData.id] || []}

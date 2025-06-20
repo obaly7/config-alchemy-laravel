@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { StepData, colorClasses } from '@/data/schoolData';
 
 interface StepContentProps {
@@ -12,6 +13,8 @@ interface StepContentProps {
 
 const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentProps) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [customOption, setCustomOption] = useState('');
+  const [showCustomInput, setShowCustomInput] = useState(false);
 
   const handleOptionToggle = (optionId: string) => {
     if (step.multiSelect) {
@@ -23,6 +26,26 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
     } else {
       // Single select: replace array with single value
       onSelectionChange([optionId]);
+    }
+  };
+
+  const handleCustomOptionAdd = () => {
+    if (customOption.trim()) {
+      const customId = `custom_${Date.now()}`;
+      const customOptionData = {
+        id: customId,
+        label: customOption.trim(),
+        icon: '✨'
+      };
+      
+      // Add to selected values
+      const updatedValues = step.multiSelect 
+        ? [...selectedValues, customId]
+        : [customId];
+      
+      onSelectionChange(updatedValues);
+      setCustomOption('');
+      setShowCustomInput(false);
     }
   };
 
@@ -56,6 +79,49 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
             className="px-3 py-2 border rounded-lg text-sm w-64"
           />
         )}
+      </div>
+
+      {/* Custom Option Input */}
+      {showCustomInput && (
+        <div className="mb-6 p-4 bg-tanween-primary/5 rounded-lg border-2 border-tanween-primary/20">
+          <div className="flex gap-3">
+            <input
+              type="text"
+              placeholder="اكتب خيارك المخصص..."
+              value={customOption}
+              onChange={(e) => setCustomOption(e.target.value)}
+              className="flex-1 px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary text-right"
+              dir="rtl"
+              onKeyPress={(e) => e.key === 'Enter' && handleCustomOptionAdd()}
+            />
+            <Button 
+              onClick={handleCustomOptionAdd}
+              disabled={!customOption.trim()}
+              className="bg-tanween-primary hover:bg-tanween-primary/90"
+            >
+              إضافة
+            </Button>
+            <Button 
+              onClick={() => setShowCustomInput(false)}
+              variant="outline"
+              className="border-tanween-secondary text-tanween-secondary"
+            >
+              إلغاء
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Add Other Option Button */}
+      <div className="mb-6">
+        <Button
+          onClick={() => setShowCustomInput(true)}
+          variant="outline"
+          className="w-full border-2 border-dashed border-tanween-secondary/50 text-tanween-primary hover:bg-tanween-primary/5 hover:border-tanween-primary"
+        >
+          <span className="ml-2">➕</span>
+          إضافة خيار آخر
+        </Button>
       </div>
 
       {/* Options Grid */}

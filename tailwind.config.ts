@@ -32,6 +32,11 @@ export default {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
+				tanween: {
+					primary: 'hsl(var(--tanween-primary))',
+					secondary: 'hsl(var(--tanween-secondary))',
+					accent: 'hsl(var(--tanween-accent))'
+				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'

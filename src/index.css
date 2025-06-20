@@ -15,11 +15,17 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Tanween Brand Colors */
+    --primary: 213 65% 44%; /* Polynesian Blue #0e4e96 */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 219 58% 64%; /* Vista Blue #739dd2 */
+    --secondary-foreground: 213 65% 44%;
+
+    /* Tanween Extended Colors */
+    --tanween-primary: 213 65% 44%; /* #0e4e96 */
+    --tanween-secondary: 219 58% 64%; /* #739dd2 */
+    --tanween-accent: 215 61% 54%; /* Blend of primary colors */
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -99,5 +105,28 @@
 
   body {
     @apply bg-background text-foreground;
+    direction: rtl;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  html {
+    direction: rtl;
+  }
+
+  /* RTL-specific adjustments */
+  .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  /* Tanween brand styling */
+  .tanween-gradient {
+    background: linear-gradient(135deg, hsl(var(--tanween-primary)) 0%, hsl(var(--tanween-secondary)) 100%);
+  }
+
+  .tanween-text-gradient {
+    background: linear-gradient(135deg, hsl(var(--tanween-primary)) 0%, hsl(var(--tanween-secondary)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
