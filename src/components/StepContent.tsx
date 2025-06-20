@@ -37,11 +37,17 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
   const handleCustomOptionAdd = () => {
     if (customOption.trim()) {
       const customId = `custom_${Date.now()}`;
-      const customOptionData = {
-        id: customId,
-        label: customOption.trim(),
-        icon: '✨'
-      };
+      const customLabel = customOption.trim();
+      
+      // Add the custom option to the step's options list temporarily
+      if (step.options) {
+        step.options.push({
+          id: customId,
+          label: customLabel,
+          labelEn: customLabel,
+          icon: '✨'
+        });
+      }
       
       // Add to selected values
       const updatedValues = step.multiSelect 

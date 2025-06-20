@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Save, Download, Edit3, FileText, FileJson } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Save, Download, Edit3, FileText, FileJson } from 'lucide-react';
 import { schoolSetupSteps } from '@/data/schoolData';
 import { WizardData } from './SchoolWizard';
 
@@ -35,15 +35,15 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-green-50 p-4">
+    <div className="min-h-screen tanween-gradient p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="text-6xl mb-4">🎉</div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            تم إكمال إعداد بيانات المدرسة!
-          </h1>
-          <p className="text-xl text-gray-600">
+           <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+             تم إكمال إعداد بيانات المدرسة!
+           </h1>
+           <p className="text-xl text-white/80">
             مراجعة شاملة للبيانات المدخلة قبل الحفظ النهائي
           </p>
         </div>
@@ -189,7 +189,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                   size="lg"
                   className="flex items-center gap-2 w-full sm:w-auto border-tanween-secondary text-tanween-primary"
                 >
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" />
                   العودة للتعديل
                 </Button>
 
@@ -260,10 +260,10 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
               <span>📱</span>
               مساعدة على الواتساب
             </a>
-            <div className="text-center text-sm text-gray-600">
-              <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
-              <p>رقم هاتف الشركة: 011-4349</p>
-            </div>
+             <div className="text-center text-sm text-gray-600">
+               <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
+               <p>رقم هاتف الشركة: 11-4349-963+</p>
+             </div>
           </div>
         </div>
 

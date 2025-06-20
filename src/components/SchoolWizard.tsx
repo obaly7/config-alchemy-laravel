@@ -281,12 +281,12 @@ const SchoolWizard = () => {
             size="lg"
             className="flex items-center gap-2"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4" />
             السابق
           </Button>
 
           <div className="text-center">
-            <p className="text-sm text-gray-500 mb-2">
+            <p className="text-sm text-white mb-2">
               {canProceed() 
                 ? "يمكنك المتابعة للخطوة التالية" 
                 : "يرجى اختيار خيار واحد على الأقل للمتابعة"
@@ -312,7 +312,7 @@ const SchoolWizard = () => {
               className="flex items-center gap-2"
             >
               التالي
-              <ArrowRight className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4" />
             </Button>
           )}
         </div>
