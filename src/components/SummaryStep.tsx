@@ -22,8 +22,27 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
 
   const getOptionLabel = (stepId: string, optionId: string) => {
     const step = schoolSetupSteps.find(s => s.id === stepId);
-    const option = step?.options.find(opt => opt.id === optionId);
-    return option ? { label: option.label, icon: option.icon } : { label: optionId, icon: null };
+    
+    // Check if step has options array
+    if (step?.options) {
+      const option = step.options.find(opt => opt.id === optionId);
+      return option ? { label: option.label, icon: option.icon } : { label: optionId, icon: null };
+    }
+    
+    // Check if step has fields with options
+    if (step?.fields) {
+      for (const field of step.fields) {
+        if (field.options) {
+          const option = field.options.find(opt => opt.id === optionId);
+          if (option) {
+            return { label: option.label, icon: option.icon };
+          }
+        }
+      }
+    }
+    
+    // Fallback to optionId as label
+    return { label: optionId, icon: null };
   };
 
   const getTotalSelections = () => {
