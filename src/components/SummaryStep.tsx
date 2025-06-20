@@ -132,13 +132,34 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onBack }: SummarySt
 
         <Separator className="my-8" />
 
+        {/* User Information Form */}
+        <Card className="mb-8 bg-tanween-primary/5 border-tanween-primary/20">
+          <CardContent className="pt-6">
+            <h4 className="font-semibold text-tanween-primary mb-4 text-xl">معلومات الشخص المسؤول</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-tanween-primary mb-2">الاسم الكامل</label>
+                <input type="text" className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-tanween-primary mb-2">رقم الهاتف</label>
+                <input type="tel" className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary" />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-tanween-primary mb-2">البريد الإلكتروني لإرسال النتائج</label>
+                <input type="email" className="w-full px-3 py-2 border border-tanween-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-tanween-primary" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
           <Button
             onClick={onBack}
             variant="outline"
             size="lg"
-            className="flex items-center gap-2 w-full sm:w-auto"
+            className="flex items-center gap-2 w-full sm:w-auto border-tanween-secondary text-tanween-primary"
           >
             <ArrowLeft className="w-4 h-4" />
             العودة للتعديل
@@ -149,7 +170,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onBack }: SummarySt
               onClick={() => onExport('json')}
               variant="outline"
               size="lg"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
             >
               <FileJson className="w-4 h-4" />
               تصدير JSON
@@ -159,7 +180,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onBack }: SummarySt
               onClick={() => onExport('excel')}
               variant="outline"
               size="lg"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-tanween-secondary text-tanween-primary"
             >
               <FileText className="w-4 h-4" />
               تصدير Excel
@@ -169,11 +190,47 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onBack }: SummarySt
           <Button
             onClick={onSave}
             size="lg"
-            className="flex items-center gap-2 w-full sm:w-auto"
+            className="flex items-center gap-2 w-full sm:w-auto bg-tanween-primary hover:bg-tanween-primary/90"
           >
             <Save className="w-4 h-4" />
-            حفظ البيانات
+            إرسال للإيميل وحفظ
           </Button>
+        </div>
+
+        {/* Thank You Message */}
+        <Card className="mb-8 bg-gradient-to-r from-tanween-primary/10 to-tanween-secondary/10 border-tanween-primary/30">
+          <CardContent className="pt-6 text-center">
+            <div className="text-6xl mb-4">🎉</div>
+            <h3 className="text-2xl font-bold text-tanween-primary mb-3">شكراً لكم من شركة تنوين</h3>
+            <p className="text-tanween-secondary text-lg mb-4">
+              نتمنى لمؤسستكم التعليمية كل التوفيق والنجاح في رحلتها التعليمية
+            </p>
+            <Button 
+              className="bg-tanween-primary hover:bg-tanween-primary/90 text-white px-8 py-3"
+              size="lg"
+            >
+              بدء تسجيل جديد (إعداد مدرسة جديدة)
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Footer */}
+        <div className="border-t border-tanween-secondary/20 pt-8 mt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a 
+              href="https://wa.me/963958555801" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              <span>📱</span>
+              مساعدة على الواتساب
+            </a>
+            <div className="text-center text-sm text-gray-600">
+              <p>جميع الحقوق محفوظة لشركة AutoZone - 2025</p>
+              <p>رقم هاتف الشركة: 11-4349-963+</p>
+            </div>
+          </div>
         </div>
 
         {/* Instructions */}

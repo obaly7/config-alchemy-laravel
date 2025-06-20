@@ -145,7 +145,7 @@ const SchoolWizard = () => {
               <CardTitle className="flex items-center gap-2 text-tanween-primary">
                 <span className="text-2xl">{currentStepData.icon}</span>
                 <div>
-                  <div className="text-lg font-bold">الخطوة {currentStep + 1} من {totalSteps}</div>
+                  <div className="text-lg font-bold">خطوة {currentStepData.stepNumber} من {totalSteps}</div>
                   <div className="text-sm text-tanween-secondary font-medium">
                     {currentStepData.title}
                   </div>

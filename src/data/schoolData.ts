@@ -1,271 +1,548 @@
+export interface FieldData {
+  id: string;
+  label: string;
+  labelEn?: string;
+  type: 'text' | 'email' | 'phone' | 'number' | 'date' | 'file' | 'select' | 'multiselect' | 'textarea';
+  required?: boolean;
+  options?: { id: string; label: string; labelEn?: string; icon?: string; }[];
+  validation?: {
+    pattern?: string;
+    minLength?: number;
+    maxLength?: number;
+    min?: number;
+    max?: number;
+  };
+}
+
 export interface StepData {
   id: string;
   title: string;
+  titleEn: string;
   description: string;
+  descriptionEn: string;
   icon: string;
   color: string;
-  options: Option[];
-  multiSelect: boolean;
+  stepNumber: number;
+  fields?: FieldData[];
+  multiSelect?: boolean;
+  allowOther?: boolean;
+  options?: {
+    id: string;
+    label: string;
+    labelEn?: string;
+    icon?: string;
+    description?: string;
+  }[];
 }
 
-export interface Option {
-  id: string;
-  label: string;
-  description?: string;
-  icon?: string;
-}
+export const colorClasses = {
+  blue: {
+    card: 'border-tanween-secondary/30 bg-tanween-secondary/5',
+    selected: 'border-tanween-primary bg-tanween-primary/10',
+    text: 'text-tanween-primary'
+  },
+  green: {
+    card: 'border-green-300 bg-green-50',
+    selected: 'border-green-500 bg-green-100',
+    text: 'text-green-700'
+  },
+  purple: {
+    card: 'border-purple-300 bg-purple-50',
+    selected: 'border-purple-500 bg-purple-100',
+    text: 'text-purple-700'
+  },
+  orange: {
+    card: 'border-orange-300 bg-orange-50',
+    selected: 'border-orange-500 bg-orange-100',
+    text: 'text-orange-700'
+  },
+  red: {
+    card: 'border-red-300 bg-red-50',
+    selected: 'border-red-500 bg-red-100',
+    text: 'text-red-700'
+  },
+  indigo: {
+    card: 'border-indigo-300 bg-indigo-50',
+    selected: 'border-indigo-500 bg-indigo-100',
+    text: 'text-indigo-700'
+  },
+  pink: {
+    card: 'border-pink-300 bg-pink-50',
+    selected: 'border-pink-500 bg-pink-100',
+    text: 'text-pink-700'
+  },
+  yellow: {
+    card: 'border-yellow-300 bg-yellow-50',
+    selected: 'border-yellow-500 bg-yellow-100',
+    text: 'text-yellow-700'
+  },
+  teal: {
+    card: 'border-teal-300 bg-teal-50',
+    selected: 'border-teal-500 bg-teal-100',
+    text: 'text-teal-700'
+  }
+};
 
 export const schoolSetupSteps: StepData[] = [
   {
-    id: 'school_classification',
-    title: 'تصنيف المدرسة',
-    description: 'حدد نوع المدرسة والمؤسسة التعليمية',
+    id: 'general_info',
+    stepNumber: 1,
+    title: 'الخطوة الأولى: المعلومات العامة حول المدرسة',
+    titleEn: 'Step 1: General School Information',
+    description: 'سيتم إدخال المعلومات العامة عن المدرسة',
+    descriptionEn: 'Enter general information about the school',
     icon: '🏫',
     color: 'blue',
-    multiSelect: false,
+    fields: [
+      { id: 'school_name_ar', label: 'اسم المدرسة باللغة العربية', labelEn: 'School Name in Arabic', type: 'text', required: true },
+      { id: 'school_name_en', label: 'اسم المدرسة باللغة الإنجليزية', labelEn: 'School Name in English', type: 'text', required: true },
+      { id: 'address_ar', label: 'عنوان المدرسة باللغة العربية', labelEn: 'School Address in Arabic', type: 'text', required: true },
+      { id: 'address_en', label: 'عنوان المدرسة باللغة الإنجليزية', labelEn: 'School Address in English', type: 'text', required: true },
+      { id: 'highest_grade', label: 'أعلى صف', labelEn: 'Highest Grade', type: 'text', required: true },
+      { id: 'establishment_year', label: 'سنة التأسيس', labelEn: 'Establishment Year', type: 'number', required: true, validation: { min: 1900, max: new Date().getFullYear() } },
+      { id: 'phone1', label: 'رقم الهاتف 1 (يجب أن يبدأ بـ +962 أو +963)', labelEn: 'Phone Number 1 (must start with +962 or +963)', type: 'phone', required: true },
+      { id: 'phone2', label: 'رقم الهاتف 2 (يجب أن يبدأ بـ +962 أو +963)', labelEn: 'Phone Number 2 (must start with +962 or +963)', type: 'phone' },
+      { id: 'email', label: 'البريد الإلكتروني', labelEn: 'Email', type: 'email', required: true },
+      { id: 'website', label: 'الموقع الإلكتروني', labelEn: 'Website', type: 'text' },
+      { id: 'notes', label: 'ملاحظات إضافية', labelEn: 'Additional Notes', type: 'textarea' },
+      { id: 'logo', label: 'نرجو إرفاق صورة شعار (لوغو) المدرسة', labelEn: 'Please attach school logo image', type: 'file' },
+      { id: 'school_image', label: 'نرجو إرفاق أي صورة توضيحية وتعريفية للمدرسة', labelEn: 'Please attach any illustrative school image', type: 'file' }
+    ],
+    multiSelect: true,
+    allowOther: true,
     options: [
-      { id: 'government', label: 'حكومية', icon: '🏛️' },
-      { id: 'private', label: 'خاصة', icon: '🏢' },
-      { id: 'international', label: 'دولية', icon: '🌍' },
-      { id: 'other_school', label: 'غير ذلك', icon: '📋' }
+      { id: 'government', label: 'حكومية', labelEn: 'Government', icon: '🏛️' },
+      { id: 'private', label: 'خاصة', labelEn: 'Private', icon: '🏢' },
+      { id: 'international', label: 'دولية', labelEn: 'International', icon: '🌍' },
+      { id: 'national_curriculum', label: 'منهاج وطني', labelEn: 'National Curriculum', icon: '🇯🇴' },
+      { id: 'international_curriculum', label: 'منهاج دولي', labelEn: 'International Curriculum', icon: '🌐' },
+      { id: 'nursery', label: 'حضانة', labelEn: 'Nursery', icon: '👶' },
+      { id: 'kindergarten', label: 'روضة أطفال', labelEn: 'Kindergarten', icon: '🧸' },
+      { id: 'school', label: 'مدرسة', labelEn: 'School', icon: '🏫' },
+      { id: 'college', label: 'كلية', labelEn: 'College', icon: '🎓' },
+      { id: 'university', label: 'جامعة', labelEn: 'University', icon: '🏛️' },
+      { id: 'institute', label: 'معهد', labelEn: 'Institute', icon: '📚' },
+      { id: 'religious_institute', label: 'معهد ديني', labelEn: 'Religious Institute', icon: '🕌' },
+      { id: 'teacher_only', label: 'الأستاذ فقط يعمل على المنصة', labelEn: 'Teacher Only Works on Platform', icon: '👨‍🏫' },
+      { id: 'supervisor_only', label: 'المشرف فقط يعمل على المنصة', labelEn: 'Supervisor Only Works on Platform', icon: '👨‍💼' },
+      { id: 'both_roles', label: 'الأستاذ والمشرف لهما دور على المنصة', labelEn: 'Both Teacher and Supervisor Have Roles', icon: '👥' },
+      { id: 'verification_yes', label: 'نعم - يحتاج تحقق من المشرف', labelEn: 'Yes - Needs Supervisor Verification', icon: '✅' },
+      { id: 'verification_no', label: 'لا - لا يحتاج تحقق من المشرف', labelEn: 'No - No Supervisor Verification Needed', icon: '❌' }
     ]
   },
   {
-    id: 'curriculum_type',
-    title: 'نوع المنهاج',
-    description: 'اختر نوع المنهاج المتبع في المدرسة',
-    icon: '📚',
+    id: 'buildings',
+    stepNumber: 2,
+    title: 'الخطوة الثانية: الأبنية والقاعات - 2-1 الأبنية',
+    titleEn: 'Step 2: Buildings and Halls - 2-1 Buildings',
+    description: 'سيتم تعريف مرافق المدرسة من أبنية وقاعات - أدخل أسماء المباني',
+    descriptionEn: 'Define school facilities from buildings and halls - Enter building names',
+    icon: '🏢',
     color: 'green',
-    multiSelect: false,
+    multiSelect: true,
+    allowOther: true,
     options: [
-      { id: 'national', label: 'وطني', icon: '🇸🇦' },
-      { id: 'international', label: 'دولي', icon: '🌐' }
-    ]
-  },
-  {
-    id: 'institution_type',
-    title: 'نوع المؤسسة التعليمية',
-    description: 'حدد نوع المؤسسة التعليمية',
-    icon: '🎓',
-    color: 'purple',
-    multiSelect: false,
-    options: [
-      { id: 'nursery', label: 'حضانة', icon: '👶' },
-      { id: 'kindergarten', label: 'روضة أطفال', icon: '🧸' },
-      { id: 'school', label: 'مدرسة', icon: '🏫' },
-      { id: 'college', label: 'كلية', icon: '🎓' },
-      { id: 'university', label: 'جامعة', icon: '🏛️' },
-      { id: 'institute', label: 'معهد', icon: '📖' },
-      { id: 'religious_institute', label: 'معهد ديني', icon: '🕌' },
-      { id: 'other_institution', label: 'غير ذلك', icon: '📋' }
+      { id: 'building_1', label: 'مبنى 1', labelEn: 'Building 1', icon: '🏢' },
+      { id: 'building_2', label: 'مبنى 2', labelEn: 'Building 2', icon: '🏢' },
+      { id: 'building_3', label: 'مبنى 3', labelEn: 'Building 3', icon: '🏢' },
+      { id: 'building_4', label: 'مبنى 4', labelEn: 'Building 4', icon: '🏢' },
+      { id: 'building_5', label: 'مبنى 5', labelEn: 'Building 5', icon: '🏢' },
+      { id: 'internal_sector', label: 'القطاع الداخلي', labelEn: 'Internal Sector', icon: '🏠' },
+      { id: 'external_sector', label: 'القطاع الخارجي', labelEn: 'External Sector', icon: '🌳' }
     ]
   },
   {
     id: 'facilities',
-    title: 'القاعات والمرافق',
-    description: 'اختر المرافق المتوفرة في المدرسة',
-    icon: '🏢',
-    color: 'orange',
+    stepNumber: 3,
+    title: 'الخطوة 2-2: القاعات والمرافق',
+    titleEn: 'Step 2-2: Halls and Facilities',
+    description: 'القاعات والمرافق (يمكن اختيار عدة خيارات) - كل خيار سيتم ربطه باسم المبنى من الخطوة السابقة',
+    descriptionEn: 'Halls and facilities (multiple choices allowed) - Each option will be linked to building name from previous step',
+    icon: '🏛️',
+    color: 'purple',
     multiSelect: true,
+    allowOther: true,
     options: [
-      { id: 'medical_clinic', label: 'عيادة طبية', icon: '🏥' },
-      { id: 'teachers_lounge', label: 'غرفة استراحة المعلمين', icon: '☕' },
-      { id: 'security_room', label: 'غرفة الأمن والحماية', icon: '🛡️' },
-      { id: 'activities_room', label: 'غرفة الأنشطة اللاصفية', icon: '🎨' },
-      { id: 'counseling_room', label: 'غرفة الإرشاد النفسي', icon: '🧠' },
-      { id: 'meeting_room', label: 'غرفة الاجتماعات', icon: '👥' },
-      { id: 'waiting_room', label: 'غرفة الانتظار', icon: '⏰' },
-      { id: 'control_room', label: 'غرفة التحكم والمراقبة', icon: '📹' },
-      { id: 'server_room', label: 'غرفة الخوادم', icon: '💻' },
-      { id: 'learning_resources', label: 'غرفة مصادر تعلم', icon: '📚' },
-      { id: 'activities_hall', label: 'قاعة أنشطة', icon: '🎭' },
-      { id: 'training_hall', label: 'قاعة تدريب', icon: '💪' },
-      { id: 'computer_lab', label: 'قاعة حاسوب', icon: '💻' },
-      { id: 'gym', label: 'قاعة رياضية داخلية', icon: '🏃' },
-      { id: 'classroom', label: 'قاعة صفية', icon: '📝' },
-      { id: 'arts_room', label: 'قاعة فنون', icon: '🎨' },
-      { id: 'music_room', label: 'قاعة موسيقى', icon: '🎵' },
-      { id: 'cafeteria', label: 'كافتيريا', icon: '🍽️' },
-      { id: 'biology_lab', label: 'مختبر أحياء', icon: '🧬' },
-      { id: 'science_lab', label: 'مختبر علوم', icon: '🔬' },
-      { id: 'physics_lab', label: 'مختبر فيزياء', icon: '⚛️' },
-      { id: 'chemistry_lab', label: 'مختبر كيمياء', icon: '🧪' },
-      { id: 'swimming_pool', label: 'مسبح', icon: '🏊' },
-      { id: 'theater', label: 'مسرح', icon: '🎭' },
-      { id: 'prayer_room', label: 'مصلى', icon: '🕌' },
-      { id: 'principal_office', label: 'مكتب المدير', icon: '👔' },
-      { id: 'vice_principal_office', label: 'مكتب الوكيل', icon: '📋' },
-      { id: 'library', label: 'مكتبة', icon: '📚' },
-      { id: 'outdoor_playground', label: 'ملعب خارجي', icon: '⚽' },
-      { id: 'bus_stop', label: 'موقف الحافلات', icon: '🚌' }
+      { id: 'medical_clinic', label: 'عيادة طبية', labelEn: 'Medical Clinic', icon: '🏥' },
+      { id: 'teachers_lounge', label: 'غرفة استراحة المعلمين', labelEn: 'Teachers Lounge', icon: '☕' },
+      { id: 'security_room', label: 'غرفة الأمن والحماية', labelEn: 'Security Room', icon: '🛡️' },
+      { id: 'activities_room', label: 'غرفة الأنشطة اللاصفية', labelEn: 'Extracurricular Activities Room', icon: '🎨' },
+      { id: 'counseling_room', label: 'غرفة الإرشاد النفسي', labelEn: 'Counseling Room', icon: '🧠' },
+      { id: 'meeting_room', label: 'غرفة الاجتماعات', labelEn: 'Meeting Room', icon: '👥' },
+      { id: 'waiting_room', label: 'غرفة الانتظار', labelEn: 'Waiting Room', icon: '⏰' },
+      { id: 'control_room', label: 'غرفة التحكم والمراقبة', labelEn: 'Control and Monitoring Room', icon: '📹' },
+      { id: 'server_room', label: 'غرفة الخوادم', labelEn: 'Server Room', icon: '💻' },
+      { id: 'learning_resources', label: 'غرفة مصادر تعلم', labelEn: 'Learning Resources Room', icon: '📚' },
+      { id: 'activities_hall', label: 'قاعة أنشطة', labelEn: 'Activities Hall', icon: '🎭' },
+      { id: 'training_hall', label: 'قاعة تدريب', labelEn: 'Training Hall', icon: '💪' },
+      { id: 'computer_lab', label: 'قاعة حاسوب', labelEn: 'Computer Lab', icon: '💻' },
+      { id: 'gym', label: 'قاعة رياضية داخلية', labelEn: 'Indoor Gym', icon: '🏃' },
+      { id: 'classroom', label: 'قاعة صفية', labelEn: 'Classroom', icon: '📝' },
+      { id: 'arts_room', label: 'قاعة فنون', labelEn: 'Arts Room', icon: '🎨' },
+      { id: 'music_room', label: 'قاعة موسيقى', labelEn: 'Music Room', icon: '🎵' },
+      { id: 'cafeteria', label: 'كافتيريا', labelEn: 'Cafeteria', icon: '🍽️' },
+      { id: 'biology_lab', label: 'مختبر أحياء', labelEn: 'Biology Lab', icon: '🧬' },
+      { id: 'science_lab', label: 'مختبر علوم', labelEn: 'Science Lab', icon: '🔬' },
+      { id: 'physics_lab', label: 'مختبر فيزياء', labelEn: 'Physics Lab', icon: '⚛️' },
+      { id: 'chemistry_lab', label: 'مختبر كيمياء', labelEn: 'Chemistry Lab', icon: '🧪' },
+      { id: 'swimming_pool', label: 'مسبح', labelEn: 'Swimming Pool', icon: '🏊' },
+      { id: 'theater', label: 'مسرح', labelEn: 'Theater', icon: '🎭' },
+      { id: 'prayer_room', label: 'مصلى', labelEn: 'Prayer Room', icon: '🕌' },
+      { id: 'principal_office', label: 'مكتب المدير', labelEn: 'Principal Office', icon: '👔' },
+      { id: 'vice_principal_office', label: 'مكتب الوكيل', labelEn: 'Vice Principal Office', icon: '📋' },
+      { id: 'library', label: 'مكتبة', labelEn: 'Library', icon: '📚' },
+      { id: 'outdoor_playground', label: 'ملعب خارجي', labelEn: 'Outdoor Playground', icon: '⚽' },
+      { id: 'bus_stop', label: 'موقف الحافلات', labelEn: 'Bus Stop', icon: '🚌' }
+    ]
+  },
+  {
+    id: 'academic_year',
+    stepNumber: 4,
+    title: 'الخطوة الثالثة: العام الدراسي والعطل والتواريخ المميزة',
+    titleEn: 'Step 3: Academic Year, Holidays and Special Dates',
+    description: 'هنا يتم تعريف المعلومات الرئيسية ذات الصلة بالتقويم المدرسي',
+    descriptionEn: 'Here we define the main information related to the school calendar',
+    icon: '📅',
+    color: 'orange',
+    fields: [
+      { 
+        id: 'yearly_organization', 
+        label: 'هل يتم التنظيم على أساس العام الدراسي الكامل؟', 
+        labelEn: 'Is it organized on the basis of the full academic year?', 
+        type: 'select',
+        options: [
+          { id: 'yes', label: 'نعم', labelEn: 'Yes' },
+          { id: 'no', label: 'لا', labelEn: 'No' }
+        ]
+      },
+      { 
+        id: 'academic_year_name', 
+        label: 'تسمية العام الدراسي', 
+        labelEn: 'Academic Year Name', 
+        type: 'select',
+        options: [
+          { id: '2025-2026', label: '2025-2026', labelEn: '2025-2026' },
+          { id: '2026-2027', label: '2026-2027', labelEn: '2026-2027' },
+          { id: '2027-2028', label: '2027-2028', labelEn: '2027-2028' },
+          { id: '2028-2029', label: '2028-2029', labelEn: '2028-2029' },
+          { id: '2029-2030', label: '2029-2030', labelEn: '2029-2030' },
+          { id: 'custom', label: 'تسمية مخصصة', labelEn: 'Custom Name' }
+        ]
+      },
+      { id: 'academic_year_start', label: 'تاريخ بداية العام الدراسي', labelEn: 'Academic Year Start Date', type: 'date', required: true },
+      { id: 'academic_year_end', label: 'تاريخ نهاية العام الدراسي', labelEn: 'Academic Year End Date', type: 'date', required: true }
+    ],
+    multiSelect: true,
+    allowOther: true,
+    options: [
+      { id: 'semester_1', label: 'الفصل الأول', labelEn: 'First Semester', icon: '📚' },
+      { id: 'midterm_break', label: 'العطلة الانتصافية', labelEn: 'Midterm Break', icon: '🏖️' },
+      { id: 'semester_2', label: 'الفصل الثاني', labelEn: 'Second Semester', icon: '📖' },
+      { id: 'summer_activities', label: 'دورة الأنشطة الصيفية', labelEn: 'Summer Activities Course', icon: '☀️' },
+      { id: 'mothers_day', label: 'عيد الأم', labelEn: 'Mother\'s Day', icon: '👩' },
+      { id: 'evacuation_day', label: 'عيد الجلاء', labelEn: 'Evacuation Day', icon: '🇸🇾' },
+      { id: 'labor_day', label: 'عيد العمال', labelEn: 'Labor Day', icon: '⚒️' },
+      { id: 'martyrs_day', label: 'عيد الشهداء', labelEn: 'Martyrs Day', icon: '🏴' },
+      { id: 'christmas', label: 'عيد الميلاد المجيد', labelEn: 'Christmas', icon: '🎄' },
+      { id: 'new_year', label: 'رأس السنة الميلادية', labelEn: 'New Year', icon: '🎊' },
+      { id: 'eid_fitr', label: 'عيد الفطر', labelEn: 'Eid al-Fitr', icon: '🌙' },
+      { id: 'eid_adha', label: 'عيد الأضحى', labelEn: 'Eid al-Adha', icon: '🐑' },
+      { id: 'mawlid', label: 'المولد النبوي الشريف', labelEn: 'Prophet\'s Birthday', icon: '🕌' },
+      { id: 'hijri_new_year', label: 'رأس السنة الهجرية', labelEn: 'Hijri New Year', icon: '☪️' },
+      { id: 'good_friday_west', label: 'الجمعة العظيمة - غربي', labelEn: 'Good Friday - Western', icon: '✝️' },
+      { id: 'easter_west', label: 'عيد الفصح - غربي', labelEn: 'Easter - Western', icon: '🐰' },
+      { id: 'good_friday_east', label: 'الجمعة العظيمة - شرقي', labelEn: 'Good Friday - Eastern', icon: '☦️' },
+      { id: 'easter_east', label: 'عيد الفصح - شرقي', labelEn: 'Easter - Eastern', icon: '🥚' },
+      { id: 'first_term_exams', label: 'امتحانات الفصل الأول', labelEn: 'First Term Exams', icon: '📝' },
+      { id: 'second_term_exams', label: 'امتحانات الفصل الثاني', labelEn: 'Second Term Exams', icon: '📋' },
+      { id: 'teachers_day', label: 'يوم المعلم', labelEn: 'Teachers Day', icon: '👨‍🏫' },
+      { id: 'arabic_language_day', label: 'يوم اللغة العربية', labelEn: 'Arabic Language Day', icon: '📜' }
     ]
   },
   {
     id: 'grade_levels',
-    title: 'المراحل الدراسية',
-    description: 'حدد المراحل الدراسية المتوفرة',
-    icon: '📖',
+    stepNumber: 5,
+    title: 'الخطوة الرابعة: المراحل والمستويات الدراسية',
+    titleEn: 'Step 4: Educational Stages and Grade Levels',
+    description: 'تحديد المراحل الدراسية (مثل الابتدائية) والصفوف (مثل الصف الثالث)',
+    descriptionEn: 'Define educational stages (like elementary) and grades (like third grade)',
+    icon: '🎓',
     color: 'indigo',
     multiSelect: true,
+    allowOther: true,
     options: [
-      { id: 'kindergarten', label: 'رياض الأطفال', icon: '🧸' },
-      { id: 'elementary', label: 'المرحلة الابتدائية', icon: '📝' },
-      { id: 'middle', label: 'المرحلة المتوسطة', icon: '📚' },
-      { id: 'high', label: 'المرحلة الثانوية', icon: '🎓' }
-    ]
-  },
-  {
-    id: 'subjects',
-    title: 'المواد العلمية',
-    description: 'اختر المواد التي يتم تدريسها',
-    icon: '📝',
-    color: 'red',
-    multiSelect: true,
-    options: [
-      { id: 'arabic', label: 'اللغة العربية', icon: '📝' },
-      { id: 'grammar', label: 'القواعد والإعراب', icon: '📖' },
-      { id: 'spelling', label: 'الإملاء', icon: '✏️' },
-      { id: 'anthem', label: 'النشيد', icon: '🎵' },
-      { id: 'natural_sciences', label: 'العلوم الطبيعية', icon: '🔬' },
-      { id: 'biology', label: 'علم الأحياء', icon: '🧬' },
-      { id: 'physics', label: 'الفيزياء', icon: '⚛️' },
-      { id: 'chemistry', label: 'الكيمياء', icon: '🧪' },
-      { id: 'social_studies', label: 'الاجتماعيات', icon: '🌍' },
-      { id: 'history', label: 'التاريخ', icon: '📜' },
-      { id: 'geography', label: 'الجغرافيا', icon: '🗺️' },
-      { id: 'national_education', label: 'التربية الوطنية', icon: '🇸🇦' },
-      { id: 'mathematics', label: 'الرياضيات', icon: '🔢' },
-      { id: 'geometry', label: 'الهندسة', icon: '📐' },
-      { id: 'calculus', label: 'التحليل الرياضي', icon: '📊' },
-      { id: 'algebra', label: 'الجبر', icon: '🔢' },
-      { id: 'trigonometry', label: 'المثلثات', icon: '📐' },
-      { id: 'english', label: 'اللغة الإنجليزية', icon: '🇺🇸' },
-      { id: 'french', label: 'اللغة الفرنسية', icon: '🇫🇷' },
-      { id: 'german', label: 'اللغة الألمانية', icon: '🇩🇪' },
-      { id: 'spanish', label: 'اللغة الإسبانية', icon: '🇪🇸' },
-      { id: 'computer', label: 'الحاسوب', icon: '💻' },
-      { id: 'robotics', label: 'الروبوت', icon: '🤖' },
-      { id: 'programming', label: 'البرمجة', icon: '👨‍💻' },
-      { id: 'philosophy', label: 'الفلسفة', icon: '🤔' },
-      { id: 'critical_thinking', label: 'التفكير النقدي', icon: '🧠' },
-      { id: 'islamic_education', label: 'التربية الدينية الإسلامية', icon: '🕌' },
-      { id: 'quran', label: 'القرآن الكريم والتجويد', icon: '📖' },
-      { id: 'hadith', label: 'الحديث النبوي الشريف', icon: '📜' },
-      { id: 'fiqh', label: 'الفقه', icon: '⚖️' },
-      { id: 'christian_education', label: 'التربية الدينية المسيحية', icon: '✝️' },
-      { id: 'physical_education', label: 'التربية البدنية', icon: '🏃' },
-      { id: 'art_education', label: 'التربية الفنية', icon: '🎨' },
-      { id: 'music', label: 'الموسيقى', icon: '🎵' },
-      { id: 'theater', label: 'المسرح', icon: '🎭' },
-      { id: 'life_skills', label: 'المهارات الحياتية', icon: '🔧' },
-      { id: 'communication_skills', label: 'مهارات التواصل', icon: '💬' },
-      { id: 'innovation_design', label: 'الابتكار والتصميم', icon: '💡' },
-      { id: 'home_economics', label: 'الاقتصاد المنزلي', icon: '🏠' },
-      { id: 'scientific_research', label: 'البحث العلمي', icon: '🔍' }
-    ]
-  },
-  {
-    id: 'platform_roles',
-    title: 'الأدوار على المنصة',
-    description: 'حدد من يمكنه العمل على المنصة',
-    icon: '👥',
-    color: 'cyan',
-    multiSelect: false,
-    options: [
-      { id: 'teacher_only', label: 'الأستاذ فقط يعمل على المنصة', icon: '👨‍🏫' },
-      { id: 'supervisor_only', label: 'المشرف فقط يعمل على المنصة', icon: '👨‍💼' },
-      { id: 'teacher_supervisor', label: 'الأستاذ والمشرف لهما دور على المنصة', icon: '👥' }
+      { id: 'kindergarten_stage', label: 'رياض الأطفال', labelEn: 'Kindergarten', icon: '🧸' },
+      { id: 'elementary_stage', label: 'المرحلة الابتدائية', labelEn: 'Elementary Stage', icon: '📝' },
+      { id: 'middle_stage', label: 'المرحلة المتوسطة', labelEn: 'Middle Stage', icon: '📚' },
+      { id: 'high_stage', label: 'المرحلة الثانوية', labelEn: 'High School Stage', icon: '🎓' },
+      { id: 'kg1', label: 'فئة أولى - KG1', labelEn: 'First Category - KG1', icon: '1️⃣' },
+      { id: 'kg2', label: 'فئة ثانية - KG2', labelEn: 'Second Category - KG2', icon: '2️⃣' },
+      { id: 'kg3', label: 'فئة ثالثة - KG3', labelEn: 'Third Category - KG3', icon: '3️⃣' },
+      { id: 'grade_1', label: 'الصف الأول - Grade 1', labelEn: 'First Grade - Grade 1', icon: '1️⃣' },
+      { id: 'grade_2', label: 'الصف الثاني - Grade 2', labelEn: 'Second Grade - Grade 2', icon: '2️⃣' },
+      { id: 'grade_3', label: 'الصف الثالث - Grade 3', labelEn: 'Third Grade - Grade 3', icon: '3️⃣' },
+      { id: 'grade_4', label: 'الصف الرابع - Grade 4', labelEn: 'Fourth Grade - Grade 4', icon: '4️⃣' },
+      { id: 'grade_5', label: 'الصف الخامس - Grade 5', labelEn: 'Fifth Grade - Grade 5', icon: '5️⃣' },
+      { id: 'grade_6', label: 'الصف السادس - Grade 6', labelEn: 'Sixth Grade - Grade 6', icon: '6️⃣' },
+      { id: 'grade_7', label: 'الصف السابع - Grade 7', labelEn: 'Seventh Grade - Grade 7', icon: '7️⃣' },
+      { id: 'grade_8', label: 'الصف الثامن - Grade 8', labelEn: 'Eighth Grade - Grade 8', icon: '8️⃣' },
+      { id: 'grade_9', label: 'الصف التاسع - Grade 9', labelEn: 'Ninth Grade - Grade 9', icon: '9️⃣' },
+      { id: 'grade_10', label: 'الصف العاشر - Grade 10', labelEn: 'Tenth Grade - Grade 10', icon: '🔟' },
+      { id: 'grade_11', label: 'الصف الحادي عشر - Grade 11', labelEn: 'Eleventh Grade - Grade 11', icon: '1️⃣1️⃣' },
+      { id: 'grade_12', label: 'بكالوريا - Grade 12', labelEn: 'Baccalaureate - Grade 12', icon: '🎓' }
     ]
   },
   {
     id: 'skills',
-    title: 'المهارات المطلوبة',
-    description: 'اختر المهارات التي تريد تطويرها لدى الطلاب',
+    stepNumber: 6,
+    title: 'الخطوة الخامسة: المهارات الأساسية للتقييم',
+    titleEn: 'Step 5: Basic Skills for Assessment',
+    description: 'تعريف المهارات التي يتم تقييمها من قبل المدرسين داخل النظام',
+    descriptionEn: 'Define skills that are assessed by teachers within the system',
     icon: '🎯',
+    color: 'red',
+    multiSelect: true,
+    allowOther: true,
+    options: [
+      { id: 'time_management', label: 'إدارة الوقت', labelEn: 'Time Management', icon: '⏰' },
+      { id: 'decision_making', label: 'اتخاذ القرار', labelEn: 'Decision Making', icon: '🤔' },
+      { id: 'technology_use', label: 'استخدام التكنولوجيا', labelEn: 'Technology Use', icon: '💻' },
+      { id: 'innovation', label: 'الابتكار', labelEn: 'Innovation', icon: '💡' },
+      { id: 'scientific_inquiry', label: 'الاستقصاء العلمي', labelEn: 'Scientific Inquiry', icon: '🔍' },
+      { id: 'active_listening', label: 'الاستماع النشط', labelEn: 'Active Listening', icon: '👂' },
+      { id: 'scientific_reasoning', label: 'الاستنتاج العلمي', labelEn: 'Scientific Reasoning', icon: '🧠' },
+      { id: 'self_discipline', label: 'الانضباط الذاتي', labelEn: 'Self Discipline', icon: '📏' },
+      { id: 'self_motivation', label: 'التحفيز الذاتي', labelEn: 'Self Motivation', icon: '🚀' },
+      { id: 'scientific_analysis', label: 'التحليل العلمي', labelEn: 'Scientific Analysis', icon: '📊' },
+      { id: 'collaboration', label: 'التعاون', labelEn: 'Collaboration', icon: '🤝' },
+      { id: 'oral_expression', label: 'التعبير الشفهي', labelEn: 'Oral Expression', icon: '🗣️' },
+      { id: 'self_learning', label: 'التعلم الذاتي', labelEn: 'Self Learning', icon: '📚' },
+      { id: 'creative_thinking', label: 'التفكير الإبداعي', labelEn: 'Creative Thinking', icon: '✨' },
+      { id: 'logical_thinking', label: 'التفكير المنطقي', labelEn: 'Logical Thinking', icon: '🔢' },
+      { id: 'critical_thinking', label: 'التفكير النقدي', labelEn: 'Critical Thinking', icon: '🎯' },
+      { id: 'teamwork', label: 'العمل الجماعي', labelEn: 'Teamwork', icon: '👥' },
+      { id: 'analytical_reading', label: 'القراءة التحليلية', labelEn: 'Analytical Reading', icon: '📖' },
+      { id: 'leadership', label: 'القيادة', labelEn: 'Leadership', icon: '👑' },
+      { id: 'academic_writing', label: 'الكتابة الأكاديمية', labelEn: 'Academic Writing', icon: '✍️' },
+      { id: 'flexibility', label: 'المرونة والتكيّف', labelEn: 'Flexibility and Adaptability', icon: '🌊' },
+      { id: 'personal_responsibility', label: 'المسؤولية الشخصية', labelEn: 'Personal Responsibility', icon: '🎯' },
+      { id: 'attention_to_detail', label: 'الملاحظة الدقيقة', labelEn: 'Attention to Detail', icon: '🔍' },
+      { id: 'self_awareness', label: 'الوعي بالذات', labelEn: 'Self Awareness', icon: '🪞' },
+      { id: 'applying_concepts', label: 'تطبيق المفاهيم', labelEn: 'Applying Concepts', icon: '⚙️' },
+      { id: 'problem_solving', label: 'حل المشكلات', labelEn: 'Problem Solving', icon: '🧩' },
+      { id: 'conflict_resolution', label: 'حل النزاعات', labelEn: 'Conflict Resolution', icon: '🤝' },
+      { id: 'research_skills', label: 'مهارات البحث الجيدة', labelEn: 'Good Research Skills', icon: '🔬' },
+      { id: 'organizational_skills', label: 'التنظيم الجيد', labelEn: 'Good Organization', icon: '📋' },
+      { id: 'communication_skills', label: 'مهارات التواصل الجيدة', labelEn: 'Good Communication Skills', icon: '💬' }
+    ]
+  },
+  {
+    id: 'hobbies',
+    stepNumber: 7,
+    title: 'الخطوة السادسة: الهوايات والاهتمامات لدى الطلاب',
+    titleEn: 'Step 6: Student Hobbies and Interests',
+    description: 'تعريف الهوايات والاهتمامات التي يتم التركيز عليها من قبل إدارة المدرسة ضمن إطار العملية التعليمية',
+    descriptionEn: 'Define hobbies and interests that are focused on by school administration within the educational process framework',
+    icon: '🎨',
     color: 'pink',
     multiSelect: true,
+    allowOther: true,
     options: [
-      { id: 'time_management', label: 'إدارة الوقت', description: 'القدرة على تنظيم الوقت وتحديد الأولويات', icon: '⏰' },
-      { id: 'decision_making', label: 'اتخاذ القرار', description: 'اختيار الحل الأنسب للمواقف', icon: '🤔' },
-      { id: 'technology_use', label: 'استخدام التكنولوجيا', description: 'توظيف الأدوات الرقمية', icon: '💻' },
-      { id: 'innovation', label: 'الابتكار', description: 'إنتاج أفكار جديدة وغير تقليدية', icon: '💡' },
-      { id: 'scientific_inquiry', label: 'الاستقصاء العلمي', description: 'جمع وتحليل المعلومات', icon: '🔍' },
-      { id: 'active_listening', label: 'الاستماع النشط', description: 'الاستماع بتركيز دون مقاطعة', icon: '👂' },
-      { id: 'scientific_reasoning', label: 'الاستنتاج العلمي', description: 'استخلاص نتائج مبنية على أدلة', icon: '🧠' },
-      { id: 'self_discipline', label: 'الانضباط الذاتي', description: 'الالتزام بالقوانين والتعليمات', icon: '📏' },
-      { id: 'self_motivation', label: 'التحفيز الذاتي', description: 'تحفيز النفس لتحقيق الأهداف', icon: '🚀' },
-      { id: 'scientific_analysis', label: 'التحليل العلمي', description: 'فهم وتحليل الظواهر', icon: '📊' },
-      { id: 'collaboration', label: 'التعاون', description: 'العمل مع الآخرين بشكل فعّال', icon: '🤝' },
-      { id: 'oral_expression', label: 'التعبير الشفهي', description: 'التعبير عن الأفكار بوضوح', icon: '🗣️' },
-      { id: 'self_learning', label: 'التعلم الذاتي', description: 'تعلم دون الاعتماد على المعلم', icon: '📚' },
-      { id: 'creative_thinking', label: 'التفكير الإبداعي', description: 'توليد أفكار جديدة', icon: '✨' },
-      { id: 'logical_thinking', label: 'التفكير المنطقي', description: 'التحليل المنطقي للبيانات', icon: '🔢' },
-      { id: 'critical_thinking', label: 'التفكير النقدي', description: 'تحليل عقلاني للمعلومات', icon: '🎯' },
-      { id: 'teamwork', label: 'العمل الجماعي', description: 'المشاركة في فرق العمل', icon: '👥' },
-      { id: 'analytical_reading', label: 'القراءة التحليلية', description: 'فهم النصوص وتحليلها', icon: '📖' },
-      { id: 'leadership', label: 'القيادة', description: 'تحفيز وتوجيه الآخرين', icon: '👑' },
-      { id: 'academic_writing', label: 'الكتابة الأكاديمية', description: 'كتابة منظمة في السياق الأكاديمي', icon: '✍️' },
-      { id: 'flexibility', label: 'المرونة والتكيّف', description: 'التكيف مع الظروف الجديدة', icon: '🌊' },
-      { id: 'personal_responsibility', label: 'المسؤولية الشخصية', description: 'تحمل مسؤولية الأفعال', icon: '🎯' },
-      { id: 'attention_to_detail', label: 'الملاحظة الدقيقة', description: 'الانتباه للتفاصيل', icon: '🔍' },
-      { id: 'self_awareness', label: 'الوعي بالذات', description: 'فهم المشاعر والسلوك', icon: '🪞' },
-      { id: 'applying_concepts', label: 'تطبيق المفاهيم', description: 'تطبيق المعرفة النظرية', icon: '⚙️' },
-      { id: 'problem_solving', label: 'حل المشكلات', description: 'إيجاد حلول منطقية للتحديات', icon: '🧩' },
-      { id: 'conflict_resolution', label: 'حل النزاعات', description: 'إدارة الخلافات بشكل بنّاء', icon: '🤝' },
-      { id: 'research_skills', label: 'مهارات البحث', description: 'جمع وتحليل المعلومات', icon: '🔬' },
-      { id: 'organizational_skills', label: 'التنظيم الجيد', description: 'تنظيم الموارد والمهام', icon: '📋' },
-      { id: 'communication_skills', label: 'مهارات التواصل', description: 'نقل الأفكار بوضوح', icon: '💬' }
+      { id: 'handicrafts', label: 'الأشغال اليدوية', labelEn: 'Handicrafts', icon: '✂️' },
+      { id: 'video_games', label: 'الألعاب الإلكترونية', labelEn: 'Video Games', icon: '🎮' },
+      { id: 'school_broadcasting', label: 'الإذاعة المدرسية', labelEn: 'School Broadcasting', icon: '📻' },
+      { id: 'public_speaking', label: 'الإلقاء والخطابة', labelEn: 'Public Speaking', icon: '🎤' },
+      { id: 'programming', label: 'البرمجة', labelEn: 'Programming', icon: '💻' },
+      { id: 'blogging', label: 'التدوين', labelEn: 'Blogging', icon: '📝' },
+      { id: 'graphic_design', label: 'التصميم الجرافيكي', labelEn: 'Graphic Design', icon: '🎨' },
+      { id: 'interior_design', label: 'التصميم الداخلي', labelEn: 'Interior Design', icon: '🏠' },
+      { id: '3d_design', label: 'التصميم ثلاثي الأبعاد', labelEn: '3D Design', icon: '🎯' },
+      { id: 'cinematography', label: 'التصوير السينمائي', labelEn: 'Cinematography', icon: '🎬' },
+      { id: 'photography', label: 'التصوير الفوتوغرافي', labelEn: 'Photography', icon: '📸' },
+      { id: 'coloring', label: 'التلوين', labelEn: 'Coloring', icon: '🖍️' },
+      { id: 'theater', label: 'التمثيل المسرحي', labelEn: 'Theater Acting', icon: '🎭' },
+      { id: 'drawing', label: 'الرسم', labelEn: 'Drawing', icon: '✏️' },
+      { id: 'digital_art', label: 'الرسم الرقمي', labelEn: 'Digital Art', icon: '🎨' },
+      { id: 'dancing', label: 'الرقص', labelEn: 'Dancing', icon: '💃' },
+      { id: 'robotics', label: 'الروبوتات', labelEn: 'Robotics', icon: '🤖' },
+      { id: 'physical_sports', label: 'الرياضة البدنية', labelEn: 'Physical Sports', icon: '🏃' },
+      { id: 'gardening', label: 'الزراعة', labelEn: 'Gardening', icon: '🌱' },
+      { id: 'swimming', label: 'السباحة', labelEn: 'Swimming', icon: '🏊' },
+      { id: 'travel_exploration', label: 'السفر والاستكشاف', labelEn: 'Travel and Exploration', icon: '✈️' },
+      { id: 'chess', label: 'الشطرنج', labelEn: 'Chess', icon: '♟️' },
+      { id: 'cooking', label: 'الطهي', labelEn: 'Cooking', icon: '👨‍🍳' },
+      { id: 'running', label: 'الجري', labelEn: 'Running', icon: '🏃‍♂️' },
+      { id: 'musical_instruments', label: 'العزف على الآلات الموسيقية', labelEn: 'Playing Musical Instruments', icon: '🎹' },
+      { id: 'science_experiments', label: 'العلوم والتجارب', labelEn: 'Science and Experiments', icon: '🔬' },
+      { id: 'volunteering', label: 'العمل التطوعي', labelEn: 'Volunteering', icon: '🤝' },
+      { id: 'singing', label: 'الغناء', labelEn: 'Singing', icon: '🎤' },
+      { id: 'reading', label: 'القراءة', labelEn: 'Reading', icon: '📚' },
+      { id: 'creative_writing', label: 'الكتابة الإبداعية', labelEn: 'Creative Writing', icon: '✍️' },
+      { id: 'collecting', label: 'جمع الطوابع / العملات', labelEn: 'Stamp/Coin Collecting', icon: '🪙' },
+      { id: 'puzzle_solving', label: 'حل الألغاز', labelEn: 'Puzzle Solving', icon: '🧩' },
+      { id: 'video_production', label: 'صناعة الفيديو', labelEn: 'Video Production', icon: '🎥' },
+      { id: 'basketball', label: 'كرة السلة', labelEn: 'Basketball', icon: '🏀' }
+    ]
+  },
+  {
+    id: 'behavioral_notes',
+    stepNumber: 8,
+    title: 'الخطوة السابعة: الملاحظات السلوكية والأخلاقية',
+    titleEn: 'Step 7: Behavioral and Ethical Notes',
+    description: 'تحديد الملاحظات الإيجابية والسلبية التي يتم تسجيلها في النظام من قبل الكادر التعليمي',
+    descriptionEn: 'Define positive and negative notes that are recorded in the system by educational staff',
+    icon: '📋',
+    color: 'yellow',
+    multiSelect: true,
+    allowOther: true,
+    options: [
+      // Positive Notes
+      { id: 'creative_idea', label: 'أبدع في تقديم فكرة جديدة', labelEn: 'Presented a creative new idea', icon: '💡' },
+      { id: 'respect_teachers', label: 'أبدى احتراماً للمعلمين والموظفين', labelEn: 'Showed respect to teachers and staff', icon: '🙏' },
+      { id: 'cooperation', label: 'أبدى تعاوناً مميزاً مع زملائه', labelEn: 'Showed excellent cooperation with peers', icon: '🤝' },
+      { id: 'self_discipline', label: 'أظهر انضباطاً ذاتياً عالياً', labelEn: 'Demonstrated high self-discipline', icon: '📏' },
+      { id: 'self_development', label: 'أظهر اهتماماً بتطوير ذاته', labelEn: 'Showed interest in self-development', icon: '📈' },
+      { id: 'behavioral_improvement', label: 'أظهر تحسناً واضحاً في سلوكه', labelEn: 'Showed clear behavioral improvement', icon: '⬆️' },
+      { id: 'leadership_spirit', label: 'أظهر روح القيادة', labelEn: 'Demonstrated leadership spirit', icon: '👑' },
+      { id: 'problem_solving_skill', label: 'أظهر مهارة في حل المشكلات', labelEn: 'Demonstrated problem-solving skills', icon: '🧩' },
+      { id: 'punctuality', label: 'احترم الوقت والتزم بالمواعيد', labelEn: 'Respected time and kept appointments', icon: '⏰' },
+      { id: 'class_rules', label: 'احترم قواعد الصف', labelEn: 'Respected classroom rules', icon: '📋' },
+      { id: 'quick_response', label: 'استجاب للتوجيهات بسرعة', labelEn: 'Responded quickly to instructions', icon: '⚡' },
+      { id: 'uniform_compliance', label: 'التزم بالزي المدرسي', labelEn: 'Complied with school uniform', icon: '👔' },
+      { id: 'good_morals', label: 'تحلّى بالأخلاق الحميدة', labelEn: 'Demonstrated good morals', icon: '✨' },
+      { id: 'responsibility', label: 'تحمل المسؤولية بجدية', labelEn: 'Took responsibility seriously', icon: '🎯' },
+      { id: 'positive_interaction', label: 'تفاعل بإيجابية مع المعلم', labelEn: 'Interacted positively with teacher', icon: '😊' },
+      { id: 'calmness', label: 'حافظ على هدوئه في المواقف الصعبة', labelEn: 'Remained calm in difficult situations', icon: '😌' },
+      { id: 'positive_spirit', label: 'ساهم في نشر الروح الإيجابية', labelEn: 'Contributed to spreading positive spirit', icon: '☀️' },
+      { id: 'class_participation', label: 'شارك بفعالية في الأنشطة الصفية', labelEn: 'Actively participated in class activities', icon: '🙋' },
+      { id: 'group_work', label: 'شارك في العمل الجماعي بفاعلية', labelEn: 'Effectively participated in group work', icon: '👥' },
+      { id: 'confident_expression', label: 'عبّر عن آرائه بثقة واحترام', labelEn: 'Expressed opinions with confidence and respect', icon: '💬' },
+      { id: 'helping_peers', label: 'قدّم المساعدة لزملائه', labelEn: 'Helped peers', icon: '🤗' },
+      { id: 'cleanliness', label: 'كان حريصاً على نظافة مكانه', labelEn: 'Was careful about cleanliness of his place', icon: '🧹' },
+      { id: 'model_student', label: 'كان مثالاً للطالب المثالي', labelEn: 'Was an example of an ideal student', icon: '⭐' },
+      { id: 'homework_commitment', label: 'كان ملتزماً بالواجبات المنزلية', labelEn: 'Was committed to homework', icon: '📚' },
+      { id: 'attendance', label: 'كان منضبطاً في الحضور والدوام', labelEn: 'Was disciplined in attendance', icon: '✅' },
+      
+      // Negative Notes
+      { id: 'classroom_disruption', label: 'إثارة الفوضى داخل الصف', labelEn: 'Causing disruption in class', icon: '🔥' },
+      { id: 'hiding_property', label: 'إخفاء أو إتلاف ممتلكات الغير', labelEn: 'Hiding or damaging others\' property', icon: '🚫' },
+      { id: 'personal_hygiene', label: 'إهمال النظافة الشخصية', labelEn: 'Neglecting personal hygiene', icon: '🧼' },
+      { id: 'inappropriate_language', label: 'استخدام ألفاظ غير لائقة', labelEn: 'Using inappropriate language', icon: '🤬' },
+      { id: 'morning_assembly_late', label: 'التأخر عن الطابور الصباحي', labelEn: 'Being late for morning assembly', icon: '⏰' },
+      { id: 'talking_without_permission', label: 'التحدث دون إذن', labelEn: 'Talking without permission', icon: '🗣️' },
+      { id: 'sarcasm', label: 'التصرف بسخرية أو تهكم', labelEn: 'Acting with sarcasm or mockery', icon: '😏' },
+      { id: 'loud_talking', label: 'الحديث بصوت مرتفع داخل الصف', labelEn: 'Talking loudly in class', icon: '📢' },
+      { id: 'leaving_without_permission', label: 'الخروج من الصف دون إذن', labelEn: 'Leaving class without permission', icon: '🚪' },
+      { id: 'tampering_teachers_items', label: 'العبث بأدوات المعلمين', labelEn: 'Tampering with teachers\' items', icon: '🔧' },
+      { id: 'school_property_damage', label: 'العبث بممتلكات المدرسة', labelEn: 'Damaging school property', icon: '🏫' },
+      { id: 'aggression', label: 'العدوانية في التعامل مع الآخرين', labelEn: 'Aggression in dealing with others', icon: '👊' },
+      { id: 'frequent_absence', label: 'الغياب المتكرر دون عذر', labelEn: 'Frequent absence without excuse', icon: '❌' },
+      { id: 'sleeping_in_class', label: 'النوم أثناء الحصة', labelEn: 'Sleeping during class', icon: '😴' },
+      { id: 'wall_furniture_damage', label: 'تشويه الجدران أو الأثاث', labelEn: 'Damaging walls or furniture', icon: '🎨' },
+      { id: 'repeated_tardiness', label: 'تكرار التأخر عن الحصص', labelEn: 'Repeated tardiness for classes', icon: '🕐' },
+      { id: 'refusing_instructions', label: 'رفض الاستجابة لتعليمات المعلم', labelEn: 'Refusing to respond to teacher instructions', icon: '🙅' },
+      { id: 'device_misuse', label: 'سوء استخدام الأجهزة الإلكترونية', labelEn: 'Misusing electronic devices', icon: '📱' },
+      { id: 'homework_neglect', label: 'عدم أداء الواجبات المنزلية', labelEn: 'Not doing homework', icon: '📝' },
+      { id: 'no_school_supplies', label: 'عدم إحضار الأدوات المدرسية', labelEn: 'Not bringing school supplies', icon: '✏️' },
+      { id: 'disrespecting_peers', label: 'عدم احترام الزملاء', labelEn: 'Disrespecting peers', icon: '😠' },
+      { id: 'uniform_violation', label: 'عدم الالتزام بالزي المدرسي', labelEn: 'Not complying with school uniform', icon: '👕' },
+      { id: 'location_violation', label: 'عدم الالتزام بالمكان المحدد', labelEn: 'Not staying in designated area', icon: '📍' },
+      { id: 'cheating', label: 'محاولة الغش في الاختبارات', labelEn: 'Attempting to cheat in exams', icon: '🔍' },
+      { id: 'interrupting_teacher', label: 'مقاطعة المعلم أثناء الشرح', labelEn: 'Interrupting teacher during explanation', icon: '✋' }
+    ]
+  },
+  {
+    id: 'disciplinary_actions',
+    stepNumber: 9,
+    title: 'الخطوة الثامنة: الإجراءات',
+    titleEn: 'Step 8: Disciplinary Actions',
+    description: 'تحديد الإجراءات (الإيجابية والسلبية) التي يمكن اتخاذها بناءً على سلوك الطالب',
+    descriptionEn: 'Define actions (positive and negative) that can be taken based on student behavior',
+    icon: '⚖️',
+    color: 'teal',
+    multiSelect: true,
+    allowOther: true,
+    options: [
+      // Negative Actions
+      { id: 'exclude_trips', label: 'إبعاد عن الرحلات أو الأنشطة', labelEn: 'Exclude from trips or activities', icon: '🚫' },
+      { id: 'notify_parent', label: 'إشعار ولي الأمر', labelEn: 'Notify parent/guardian', icon: '📞' },
+      { id: 'disciplinary_task', label: 'إلزام بتنفيذ مهمة انضباطية', labelEn: 'Mandatory disciplinary task', icon: '📋' },
+      { id: 'first_warning', label: 'إنذار رسمي أول', labelEn: 'First official warning', icon: '⚠️' },
+      { id: 'final_warning', label: 'إنذار رسمي نهائي', labelEn: 'Final official warning', icon: '🔴' },
+      { id: 'parent_meeting', label: 'استدعاء ولي الأمر', labelEn: 'Call parent for meeting', icon: '👨‍👩‍👧‍👦' },
+      { id: 'gradual_punishment', label: 'التدرج في تطبيق العقوبات', labelEn: 'Gradual punishment application', icon: '📊' },
+      { id: 'psychological_evaluation', label: 'التوجيه لإجراء فحص نفسي أو اجتماعي', labelEn: 'Psychological or social evaluation referral', icon: '🧠' },
+      { id: 'warning_no_repeat', label: 'تحذير بعدم التكرار', labelEn: 'Warning not to repeat', icon: '⚡' },
+      { id: 'behavior_committee', label: 'تحويل إلى لجنة السلوك', labelEn: 'Refer to behavior committee', icon: '👥' },
+      { id: 'temporary_restriction', label: 'تقييد مؤقت لبعض الصلاحيات', labelEn: 'Temporary restriction of privileges', icon: '🔒' },
+      { id: 'written_warning', label: 'تنبيه خطي', labelEn: 'Written warning', icon: '📝' },
+      { id: 'verbal_warning', label: 'تنبيه شفهي', labelEn: 'Verbal warning', icon: '🗣️' },
+      { id: 'written_commitment', label: 'توقيع تعهد خطي', labelEn: 'Written commitment signature', icon: '✍️' },
+      { id: 'temporary_suspension', label: 'توقيف مؤقت عن الدراسة', labelEn: 'Temporary suspension from study', icon: '🚪' },
+      { id: 'separate_seating', label: 'جلوس منفصل داخل الصف', labelEn: 'Separate seating in class', icon: '💺' },
+      { id: 'activity_deprivation', label: 'حرمان مؤقت من النشاطات', labelEn: 'Temporary deprivation from activities', icon: '🚫' },
+      { id: 'device_ban', label: 'حرمان من استخدام الأجهزة الإلكترونية', labelEn: 'Ban from using electronic devices', icon: '📱' },
+      { id: 'behavior_grade_deduction', label: 'خصم من درجات السلوك', labelEn: 'Behavior grade deduction', icon: '📉' },
+      { id: 'one_day_suspension', label: 'فصل ليوم دراسي واحد', labelEn: 'One school day suspension', icon: '📅' },
+      { id: 'counselor_meeting', label: 'لقاء مع المرشد الطلابي', labelEn: 'Meeting with student counselor', icon: '👨‍⚕️' },
+      { id: 'class_transfer', label: 'نقل مؤقت من الصف', labelEn: 'Temporary class transfer', icon: '↔️' },
+      
+      // Positive Actions
+      { id: 'school_exhibition', label: 'إبراز عمله في المعرض المدرسي', labelEn: 'Display work in school exhibition', icon: '🏆' },
+      { id: 'special_conversation', label: 'إتاحة حوار خاص مع الإدارة', labelEn: 'Special conversation with administration', icon: '💬' },
+      { id: 'competitions', label: 'إشراكه في مسابقات أو فعاليات', labelEn: 'Involve in competitions or events', icon: '🏅' },
+      { id: 'class_presentation', label: 'إعطاؤه فرصة عرض عمله أمام الصف', labelEn: 'Opportunity to present work to class', icon: '📊' },
+      { id: 'school_representation', label: 'ترشيحه لتمثيل المدرسة', labelEn: 'Nominate to represent school', icon: '🎖️' },
+      { id: 'enrichment_workshop', label: 'تسجيله في ورشة أو دورة إثرائية', labelEn: 'Enroll in enrichment workshop or course', icon: '📚' },
+      { id: 'morning_assembly_honor', label: 'تكريمه في الطابور الصباحي', labelEn: 'Honor in morning assembly', icon: '🌅' },
+      { id: 'motivational_messages', label: 'دعمه بعبارات تحفيزية مكتوبة', labelEn: 'Support with written motivational messages', icon: '✍️' },
+      { id: 'appreciation_certificate', label: 'شهادة شكر وتقدير', labelEn: 'Certificate of appreciation', icon: '📜' },
+      { id: 'teacher_assistant', label: 'مشاركته كمساعد معلم', labelEn: 'Participate as teacher assistant', icon: '👨‍🏫' },
+      { id: 'student_record_praise', label: 'منحه إشادة في سجل الطالب', labelEn: 'Grant praise in student record', icon: '📝' },
+      { id: 'excellence_card', label: 'منحه بطاقة تميز', labelEn: 'Grant excellence card', icon: '🏆' },
+      { id: 'parent_thank_note', label: 'منحه رسالة شكر لولي الأمر', labelEn: 'Thank you note to parent', icon: '💌' },
+      { id: 'leadership_privileges', label: 'منحه صلاحيات قيادية', labelEn: 'Grant leadership privileges', icon: '👑' },
+      { id: 'activity_organization', label: 'منحه فرصة تنظيم نشاط مدرسي', labelEn: 'Opportunity to organize school activity', icon: '🎯' },
+      { id: 'encouragement_voucher', label: 'منحه قسيمة تشجيعية', labelEn: 'Grant encouragement voucher', icon: '🎫' },
+      { id: 'book_reward', label: 'منحه كتاباً كمكافأة', labelEn: 'Grant a book as reward', icon: '📖' },
+      { id: 'daily_star', label: 'منحه نجمة سلوكية يومية', labelEn: 'Grant daily behavioral star', icon: '⭐' },
+      { id: 'favorite_activities_time', label: 'منحه وقتاً للأنشطة المحببة', labelEn: 'Time for favorite activities', icon: '⏰' },
+      { id: 'social_media_feature', label: 'نشر إنجازه في وسائل التواصل المدرسية', labelEn: 'Feature achievement on school social media', icon: '📱' },
+      { id: 'honor_board', label: 'نشر اسمه في لوحة الشرف', labelEn: 'Name on honor board', icon: '🏅' }
+    ]
+  },
+  {
+    id: 'class_cancellation_reasons',
+    stepNumber: 10,
+    title: 'الخطوة التاسعة: أسباب إلغاء الحصص',
+    titleEn: 'Step 9: Class Cancellation Reasons',
+    description: 'تحديد الأسباب المعتمدة التي يمكن تسجيلها عند إلغاء أي حصة',
+    descriptionEn: 'Define approved reasons that can be recorded when canceling any class',
+    icon: '📅',
+    color: 'indigo',
+    multiSelect: true,
+    allowOther: true,
+    options: [
+      { id: 'general_health_reasons', label: 'أسباب صحية عامة', labelEn: 'General health reasons', icon: '🏥' },
+      { id: 'preventive_measures', label: 'إجراءات وقائية (مثل التعقيم)', labelEn: 'Preventive measures (like disinfection)', icon: '🧽' },
+      { id: 'official_holiday', label: 'إلغاء بسبب عطلة رسمية', labelEn: 'Cancellation due to official holiday', icon: '📅' },
+      { id: 'emergency_staff_meeting', label: 'اجتماع طارئ للهيئة التدريسية', labelEn: 'Emergency staff meeting', icon: '👥' },
+      { id: 'exam_preparations', label: 'استعدادات للاختبارات', labelEn: 'Exam preparations', icon: '📝' },
+      { id: 'room_occupied', label: 'انشغال القاعة بفعالية أخرى', labelEn: 'Room occupied by another activity', icon: '🚪' },
+      { id: 'power_outage', label: 'انقطاع التيار الكهربائي', labelEn: 'Power outage', icon: '⚡' },
+      { id: 'schedule_conflict', label: 'تعارض مع حصة أخرى مؤجلة', labelEn: 'Conflict with another postponed class', icon: '📊' },
+      { id: 'supervisory_duty', label: 'تكليف المعلم بمهمة إشرافية', labelEn: 'Teacher assigned supervisory duty', icon: '👨‍💼' },
+      { id: 'evacuation_drill', label: 'تنفيذ خطة إخلاء', labelEn: 'Evacuation drill implementation', icon: '🚨' },
+      { id: 'health_emergency', label: 'حالة طارئة صحية لطالب أو موظف', labelEn: 'Health emergency for student or staff', icon: '🚑' },
+      { id: 'technical_failure', label: 'خلل تقني أو فني', labelEn: 'Technical or technical failure', icon: '🔧' },
+      { id: 'school_trip', label: 'رحلة مدرسية', labelEn: 'School trip', icon: '🚌' },
+      { id: 'classroom_maintenance', label: 'صيانة في القاعة الدراسية', labelEn: 'Classroom maintenance', icon: '🔨' },
+      { id: 'administrative_request', label: 'طلب إداري بإلغاء الحصة', labelEn: 'Administrative request to cancel class', icon: '📋' },
+      { id: 'severe_weather', label: 'ظروف جوية قاهرة', labelEn: 'Severe weather conditions', icon: '🌧️' },
+      { id: 'teacher_absence', label: 'غياب المعلم', labelEn: 'Teacher absence', icon: '❌' },
+      { id: 'school_event', label: 'فعالية داخل المدرسة', labelEn: 'School event', icon: '🎉' },
+      { id: 'external_training', label: 'مشاركة المعلم في تدريب خارجي', labelEn: 'Teacher participating in external training', icon: '🎓' },
+      { id: 'alternative_activity', label: 'نشاط مدرسي بديل', labelEn: 'Alternative school activity', icon: '🎯' }
     ]
   }
 ];
-
-export const colorClasses = {
-  blue: {
-    card: 'border-blue-200 bg-blue-50 hover:bg-blue-100',
-    icon: 'text-blue-600',
-    text: 'text-blue-800',
-    selected: 'border-blue-500 bg-blue-100'
-  },
-  green: {
-    card: 'border-green-200 bg-green-50 hover:bg-green-100',
-    icon: 'text-green-600',
-    text: 'text-green-800',
-    selected: 'border-green-500 bg-green-100'
-  },
-  purple: {
-    card: 'border-purple-200 bg-purple-50 hover:bg-purple-100',
-    icon: 'text-purple-600',
-    text: 'text-purple-800',
-    selected: 'border-purple-500 bg-purple-100'
-  },
-  orange: {
-    card: 'border-orange-200 bg-orange-50 hover:bg-orange-100',
-    icon: 'text-orange-600',
-    text: 'text-orange-800',
-    selected: 'border-orange-500 bg-orange-100'
-  },
-  indigo: {
-    card: 'border-indigo-200 bg-indigo-50 hover:bg-indigo-100',
-    icon: 'text-indigo-600',
-    text: 'text-indigo-800',
-    selected: 'border-indigo-500 bg-indigo-100'
-  },
-  red: {
-    card: 'border-red-200 bg-red-50 hover:bg-red-100',
-    icon: 'text-red-600',
-    text: 'text-red-800',
-    selected: 'border-red-500 bg-red-100'
-  },
-  cyan: {
-    card: 'border-cyan-200 bg-cyan-50 hover:bg-cyan-100',
-    icon: 'text-cyan-600',
-    text: 'text-cyan-800',
-    selected: 'border-cyan-500 bg-cyan-100'
-  },
-  pink: {
-    card: 'border-pink-200 bg-pink-50 hover:bg-pink-100',
-    icon: 'text-pink-600',
-    text: 'text-pink-800',
-    selected: 'border-pink-500 bg-pink-100'
-  }
-};
