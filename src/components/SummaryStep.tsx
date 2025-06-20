@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, ArrowRight, Save, Download, Edit3, FileText, FileJson } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Save, Download, Edit3, FileText, FileJson, Facebook, Instagram } from 'lucide-react';
 import { schoolSetupSteps } from '@/data/schoolData';
 import { WizardData } from './SchoolWizard';
 
@@ -13,9 +14,18 @@ interface SummaryStepProps {
   onExport: (format: 'json' | 'excel' | 'pdf') => void;
   onSendEmail: (userInfo: {name: string, phone: string, email: string}) => void;
   onBack: () => void;
+  startTime: number;
 }
 
-const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack }: SummaryStepProps) => {
+const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack, startTime }: SummaryStepProps) => {
+  const [currentTime, setCurrentTime] = useState(Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
   const getStepData = (stepId: string) => {
     return wizardData[stepId] || [];
   };
@@ -170,51 +180,25 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
           <CardContent className="pt-6">
             <h4 className="font-semibold text-green-900 mb-4 text-xl text-center">تقييم سهولة إعداد المدرسة</h4>
             <p className="text-green-800 text-center mb-4">كيف تقيم سهولة استخدام هذا المعالج؟</p>
-            <div className="flex justify-center gap-2 mb-4">
-              {[1,2,3,4,5,6,7,8,9,10].map(num => (
+            <div className="flex justify-center gap-4 mb-4">
+              {[1,2,3,4,5].map(num => (
                 <button
                   key={num}
                   type="button"
-                  className="w-10 h-10 rounded-full border-2 border-green-300 hover:bg-green-200 hover:border-green-500 transition-colors flex items-center justify-center font-semibold text-green-700"
+                  className="w-12 h-12 rounded-full border-2 border-green-300 hover:bg-green-200 hover:border-green-500 transition-colors flex items-center justify-center font-semibold text-green-700 cursor-pointer"
+                  onClick={() => {
+                    // Here you could handle the rating selection
+                    console.log(`تم اختيار التقييم: ${num}`);
+                  }}
                 >
                   {num}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-green-600 text-center">1 = صعب جداً، 10 = سهل جداً</p>
+            <p className="text-xs text-green-600 text-center">1 = صعب جداً، 5 = سهل جداً</p>
           </CardContent>
         </Card>
 
-        {/* School Images Upload */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card className="bg-purple-50 border-purple-200">
-            <CardContent className="pt-6">
-              <h4 className="font-semibold text-purple-900 mb-4 text-center">شعار المدرسة</h4>
-              <div className="border-2 border-dashed border-purple-300 rounded-lg p-6 text-center">
-                <div className="text-4xl mb-2">🏫</div>
-                <p className="text-purple-700 mb-2">انقر لرفع شعار المدرسة</p>
-                <input type="file" accept="image/*" className="hidden" />
-                <Button variant="outline" className="border-purple-300 text-purple-700">
-                  اختيار ملف
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-orange-50 border-orange-200">
-            <CardContent className="pt-6">
-              <h4 className="font-semibold text-orange-900 mb-4 text-center">صورة توضيحية للمدرسة</h4>
-              <div className="border-2 border-dashed border-orange-300 rounded-lg p-6 text-center">
-                <div className="text-4xl mb-2">🖼️</div>
-                <p className="text-orange-700 mb-2">انقر لرفع صورة توضيحية</p>
-                <input type="file" accept="image/*" className="hidden" />
-                <Button variant="outline" className="border-orange-300 text-orange-700">
-                  اختيار ملف
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
 
         {/* Additional Notes */}
         <Card className="mb-8 bg-yellow-50 border-yellow-200">
@@ -342,7 +326,8 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
             <div className="text-3xl mb-3">⏱️</div>
             <h4 className="text-xl font-bold text-blue-900 mb-2">الوقت المستغرق في الإعداد</h4>
             <p className="text-2xl font-bold text-blue-700">
-              سيتم عرض الوقت المستغرق هنا
+              {Math.floor((currentTime - startTime) / 60000).toString().padStart(2, '0')}:
+              {Math.floor(((currentTime - startTime) % 60000) / 1000).toString().padStart(2, '0')}
             </p>
           </CardContent>
         </Card>
@@ -374,7 +359,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
             >
-              <span>📱</span>
+              <span>💬</span>
               مساعدة على الواتساب
             </a>
             <div className="flex items-center gap-4">
@@ -382,17 +367,19 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                 href="https://www.facebook.com/tanweenapp" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-blue-300 transition-colors"
+                className="text-white hover:text-blue-300 transition-colors flex items-center gap-1"
               >
-                📘 فيسبوك
+                <Facebook className="w-4 h-4" />
+                فيسبوك
               </a>
               <a 
                 href="https://www.instagram.com/tanweenapp/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-pink-300 transition-colors"
+                className="text-white hover:text-pink-300 transition-colors flex items-center gap-1"
               >
-                📷 انستغرام
+                <Instagram className="w-4 h-4" />
+                انستغرام
               </a>
             </div>
             <div className="text-center text-sm text-white">

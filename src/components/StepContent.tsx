@@ -84,12 +84,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id} className="text-tanween-primary font-medium flex items-center gap-2">
               {field.label} {field.required && <span className="text-red-500">*</span>}
-              <span 
-                className="cursor-help text-gray-400 hover:text-tanween-primary transition-colors" 
-                title={`مساعدة: ${field.label}`}
-              >
-                ❓
-              </span>
             </Label>
             <Input
               id={field.id}
@@ -112,12 +106,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id} className="text-tanween-primary font-medium flex items-center gap-2">
               {field.label} {field.required && <span className="text-red-500">*</span>}
-              <span 
-                className="cursor-help text-gray-400 hover:text-tanween-primary transition-colors" 
-                title={`مساعدة: ${field.label}`}
-              >
-                ❓
-              </span>
             </Label>
             <Input
               id={field.id}
@@ -137,12 +125,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id} className="text-tanween-primary font-medium flex items-center gap-2">
               {field.label} {field.required && <span className="text-red-500">*</span>}
-              <span 
-                className="cursor-help text-gray-400 hover:text-tanween-primary transition-colors" 
-                title={`مساعدة: ${field.label}`}
-              >
-                ❓
-              </span>
             </Label>
             <Input
               id={field.id}
@@ -159,12 +141,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id} className="text-tanween-primary font-medium flex items-center gap-2">
               {field.label} {field.required && <span className="text-red-500">*</span>}
-              <span 
-                className="cursor-help text-gray-400 hover:text-tanween-primary transition-colors" 
-                title={`مساعدة: ${field.label}`}
-              >
-                ❓
-              </span>
             </Label>
             <Textarea
               id={field.id}
@@ -183,12 +159,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id} className="text-tanween-primary font-medium flex items-center gap-2">
               {field.label} {field.required && <span className="text-red-500">*</span>}
-              <span 
-                className="cursor-help text-gray-400 hover:text-tanween-primary transition-colors" 
-                title={`مساعدة: ${field.label}`}
-              >
-                ❓
-              </span>
             </Label>
             <Input
               id={field.id}
@@ -210,12 +180,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id} className="text-tanween-primary font-medium flex items-center gap-2">
               {field.label} {field.required && <span className="text-red-500">*</span>}
-              <span 
-                className="cursor-help text-gray-400 hover:text-tanween-primary transition-colors" 
-                title={`مساعدة: ${field.label}`}
-              >
-                ❓
-              </span>
             </Label>
             <Select value={value} onValueChange={(val) => handleFieldChange(field.id, val)}>
               <SelectTrigger>

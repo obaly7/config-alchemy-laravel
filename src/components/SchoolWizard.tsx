@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, ArrowRight, CheckCircle, Download, Save } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Download, Save, Facebook, Instagram } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { schoolSetupSteps } from '@/data/schoolData';
 import StepContent from './StepContent';
@@ -160,6 +160,7 @@ const SchoolWizard = () => {
         onExport={handleExportData}
         onSendEmail={handleSendEmail}
         onBack={() => setIsCompleted(false)}
+        startTime={startTime}
       />
     );
   }
@@ -194,6 +195,37 @@ const SchoolWizard = () => {
           <p className="text-lg text-white/80">
             مرحباً بك! سنقوم معاً بإعداد بيانات مدرستك خطوة بخطوة بطريقة سهلة وممتعة فلنبدأ
           </p>
+        </div>
+
+        {/* School Images Upload - First Page */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Card className="bg-purple-50/90 border-purple-200 backdrop-blur-sm">
+            <CardContent className="pt-6">
+              <h4 className="font-semibold text-purple-900 mb-4 text-center">شعار المدرسة</h4>
+              <div className="border-2 border-dashed border-purple-300 rounded-lg p-6 text-center">
+                <div className="text-4xl mb-2">🏫</div>
+                <p className="text-purple-700 mb-2">انقر لرفع شعار المدرسة</p>
+                <input type="file" accept="image/*" className="hidden" />
+                <Button variant="outline" className="border-purple-300 text-purple-700">
+                  اختيار ملف
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-orange-50/90 border-orange-200 backdrop-blur-sm">
+            <CardContent className="pt-6">
+              <h4 className="font-semibold text-orange-900 mb-4 text-center">صورة توضيحية للمدرسة</h4>
+              <div className="border-2 border-dashed border-orange-300 rounded-lg p-6 text-center">
+                <div className="text-4xl mb-2">🖼️</div>
+                <p className="text-orange-700 mb-2">انقر لرفع صورة توضيحية</p>
+                <input type="file" accept="image/*" className="hidden" />
+                <Button variant="outline" className="border-orange-300 text-orange-700">
+                  اختيار ملف
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Progress Section */}
@@ -331,7 +363,7 @@ const SchoolWizard = () => {
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
             >
-              <span>📱</span>
+              <span>💬</span>
               مساعدة على الواتساب
             </a>
             <div className="flex items-center gap-4">
@@ -339,17 +371,19 @@ const SchoolWizard = () => {
                 href="https://www.facebook.com/tanweenapp" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-blue-300 transition-colors"
+                className="text-white hover:text-blue-300 transition-colors flex items-center gap-1"
               >
-                📘 فيسبوك
+                <Facebook className="w-4 h-4" />
+                فيسبوك
               </a>
               <a 
                 href="https://www.instagram.com/tanweenapp/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-pink-300 transition-colors"
+                className="text-white hover:text-pink-300 transition-colors flex items-center gap-1"
               >
-                📷 انستغرام
+                <Instagram className="w-4 h-4" />
+                انستغرام
               </a>
             </div>
             <div className="text-center text-sm text-white">
