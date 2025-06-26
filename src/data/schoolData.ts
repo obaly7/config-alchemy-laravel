@@ -614,5 +614,34 @@ export const schoolSetupSteps: StepData[] = [
       { id: 'external_training', label: 'مشاركة المعلم في تدريب خارجي', labelEn: 'Teacher participating in external training', icon: '🎓' },
       { id: 'alternative_activity', label: 'نشاط مدرسي بديل', labelEn: 'Alternative school activity', icon: '🎯' }
     ]
+  },
+  {
+    id: 'teaching_plans_by_grade',
+    stepNumber: '17',
+    title: '17- الخطط التدريسية حسب الصفوف الدراسية',
+    titleEn: 'Teaching Plans by Grade Levels',
+    description: 'إعداد تفصيلي للخطط التدريسية لكل صف دراسي شامل عدد الشعب والحصص والمواد وأساليب التقييم',
+    descriptionEn: 'Detailed preparation of teaching plans for each grade level including sections, classes, subjects and assessment methods',
+    icon: '📋',
+    color: 'teal',
+    multiSelect: true,
+    allowOther: true,
+    options: [
+      { id: 'kg1_plan', label: 'خطة الروضة الأولى - KG1', labelEn: 'Kindergarten 1 Plan', icon: '🧸' },
+      { id: 'kg2_plan', label: 'خطة الروضة الثانية - KG2', labelEn: 'Kindergarten 2 Plan', icon: '🎈' },
+      { id: 'kg3_plan', label: 'خطة الروضة الثالثة - KG3', labelEn: 'Kindergarten 3 Plan', icon: '🎯' },
+      { id: 'grade1_plan', label: 'خطة الصف الأول الابتدائي', labelEn: 'Grade 1 Elementary Plan', icon: '1️⃣' },
+      { id: 'grade2_plan', label: 'خطة الصف الثاني الابتدائي', labelEn: 'Grade 2 Elementary Plan', icon: '2️⃣' },
+      { id: 'grade3_plan', label: 'خطة الصف الثالث الابتدائي', labelEn: 'Grade 3 Elementary Plan', icon: '3️⃣' },
+      { id: 'grade4_plan', label: 'خطة الصف الرابع الابتدائي', labelEn: 'Grade 4 Elementary Plan', icon: '4️⃣' },
+      { id: 'grade5_plan', label: 'خطة الصف الخامس الابتدائي', labelEn: 'Grade 5 Elementary Plan', icon: '5️⃣' },
+      { id: 'grade6_plan', label: 'خطة الصف السادس الابتدائي', labelEn: 'Grade 6 Elementary Plan', icon: '6️⃣' },
+      { id: 'grade7_plan', label: 'خطة الصف السابع الإعدادي', labelEn: 'Grade 7 Middle School Plan', icon: '7️⃣' },
+      { id: 'grade8_plan', label: 'خطة الصف الثامن الإعدادي', labelEn: 'Grade 8 Middle School Plan', icon: '8️⃣' },
+      { id: 'grade9_plan', label: 'خطة الصف التاسع الإعدادي', labelEn: 'Grade 9 Middle School Plan', icon: '9️⃣' },
+      { id: 'grade10_plan', label: 'خطة الصف العاشر الثانوي', labelEn: 'Grade 10 High School Plan', icon: '🔟' },
+      { id: 'grade11_plan', label: 'خطة الصف الحادي عشر الثانوي', labelEn: 'Grade 11 High School Plan', icon: '📚' },
+      { id: 'grade12_plan', label: 'خطة البكالوريا', labelEn: 'Baccalaureate Plan', icon: '🎓' }
+    ]
   }
 ];
