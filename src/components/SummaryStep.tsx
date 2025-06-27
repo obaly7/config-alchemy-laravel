@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, ArrowRight, Save, Download, Edit3, FileText, FileJson, Facebook, Instagram } from 'lucide-react';
 import { schoolSetupSteps } from '@/data/schoolData';
 import { WizardData } from './SchoolWizard';
+import * as XLSX from 'xlsx';
 
 interface SummaryStepProps {
   wizardData: WizardData;
@@ -63,6 +64,123 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
 
   const getCompletedSteps = () => {
     return Object.keys(wizardData).filter(stepId => wizardData[stepId].length > 0).length;
+  };
+
+  // Enhanced export function to include curriculum data
+  const handleExportExcel = () => {
+    console.log('Starting Excel export with curriculum data...');
+    
+    const workbook = XLSX.utils.book_new();
+    
+    // Main summary sheet
+    const summaryData = [];
+    summaryData.push(['ملخص إعداد المدرسة', '']);
+    summaryData.push(['إجمالي الخطوات المكتملة', getCompletedSteps()]);
+    summaryData.push(['إجمالي الخيارات المختارة', getTotalSelections()]);
+    summaryData.push(['نسبة الإكمال', `${Math.round((getCompletedSteps() / schoolSetupSteps.length) * 100)}%`]);
+    summaryData.push(['وقت الإعداد (دقائق)', Math.floor((currentTime - startTime) / 60000)]);
+    summaryData.push(['']);
+
+    // Add regular step data
+    schoolSetupSteps.forEach((step) => {
+      const stepData = getStepData(step.id);
+      if (stepData.length > 0) {
+        summaryData.push([step.title, '']);
+        stepData.forEach((optionId) => {
+          const { label } = getOptionLabel(step.id, optionId);
+          summaryData.push(['', label]);
+        });
+        summaryData.push(['']);
+      }
+    });
+
+    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(workbook, summarySheet, 'ملخص البيانات');
+
+    // Teaching Plans and Curriculum Sheet
+    const curriculumData = wizardData.curriculumData || [];
+    console.log('Curriculum data found:', curriculumData);
+    
+    if (curriculumData.length > 0) {
+      const teachingPlansData = [];
+      teachingPlansData.push(['الخطط الدراسية والمناهج', '', '', '', '', '', '']);
+      teachingPlansData.push(['']);
+      
+      curriculumData.forEach((gradeCurriculum: any) => {
+        teachingPlansData.push([`الصف: ${gradeCurriculum.gradeId}`, '', '', '', '', '', '']);
+        teachingPlansData.push(['']);
+        
+        if (gradeCurriculum.subjects && gradeCurriculum.subjects.length > 0) {
+          // Headers for subjects
+          teachingPlansData.push([
+            'اسم المادة',
+            'الحصص الأسبوعية', 
+            'الدرجة العظمى',
+            'درجة النجاح',
+            'نوع المادة',
+            'مادة مرسبة',
+            'مكونات التقييم'
+          ]);
+          
+          gradeCurriculum.subjects.forEach((subject: any) => {
+            const assessmentComponents = subject.assessmentComponents || [];
+            const componentsText = assessmentComponents
+              .map((comp: any) => `${comp.name} (${comp.percentage}%)`)
+              .join(', ');
+            
+            teachingPlansData.push([
+              subject.name || 'غير محدد',
+              subject.weeklyHours || 0,
+              subject.maxGrade || 100,
+              subject.passingGrade || 50,
+              subject.type || 'أساسية',
+              subject.isFailureSubject ? 'نعم' : 'لا',
+              componentsText || 'لا توجد مكونات'
+            ]);
+          });
+          
+          teachingPlansData.push(['']);
+        } else {
+          teachingPlansData.push(['لا توجد مواد محددة لهذا الصف']);
+          teachingPlansData.push(['']);
+        }
+      });
+      
+      const teachingPlansSheet = XLSX.utils.aoa_to_sheet(teachingPlansData);
+      XLSX.utils.book_append_sheet(workbook, teachingPlansSheet, 'الخطط الدراسية');
+    }
+
+    // Detailed breakdown sheet for each step
+    const detailedData = [];
+    detailedData.push(['التفاصيل الكاملة لإعداد المدرسة', '']);
+    detailedData.push(['']);
+
+    schoolSetupSteps.forEach((step, index) => {
+      const stepData = getStepData(step.id);
+      
+      detailedData.push([`${index + 1}. ${step.title}`, '']);
+      detailedData.push(['الوصف:', step.description]);
+      detailedData.push(['الحالة:', stepData.length > 0 ? 'مكتمل' : 'غير مكتمل']);
+      
+      if (stepData.length > 0) {
+        detailedData.push(['الخيارات المختارة:', '']);
+        stepData.forEach((optionId) => {
+          const { label } = getOptionLabel(step.id, optionId);
+          detailedData.push(['', `• ${label}`]);
+        });
+      }
+      
+      detailedData.push(['']);
+    });
+
+    const detailedSheet = XLSX.utils.aoa_to_sheet(detailedData);
+    XLSX.utils.book_append_sheet(workbook, detailedSheet, 'التفاصيل الكاملة');
+
+    // Export the workbook
+    const fileName = `إعداد_المدرسة_${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(workbook, fileName);
+    
+    console.log('Excel export completed with curriculum data');
   };
 
   return (
@@ -160,6 +278,46 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
               </Card>
             );
           })}
+
+          {/* Display Curriculum Data Summary */}
+          {wizardData.curriculumData && wizardData.curriculumData.length > 0 && (
+            <Card className="overflow-hidden">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-3">
+                  <span className="text-2xl">📚</span>
+                  <div>
+                    <h3 className="text-xl">الخطط الدراسية والمناهج</h3>
+                    <p className="text-sm text-gray-600 font-normal">
+                      تفاصيل المواد والمناهج لكل صف دراسي
+                    </p>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {wizardData.curriculumData.map((gradeCurriculum: any) => (
+                    <div key={gradeCurriculum.gradeId} className="border rounded-lg p-4 bg-blue-50">
+                      <h4 className="font-semibold text-blue-900 mb-2">
+                        الصف: {gradeCurriculum.gradeId}
+                      </h4>
+                      <div className="text-sm text-blue-800">
+                        عدد المواد: {gradeCurriculum.subjects?.length || 0}
+                      </div>
+                      {gradeCurriculum.subjects && gradeCurriculum.subjects.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {gradeCurriculum.subjects.map((subject: any, idx: number) => (
+                            <Badge key={idx} variant="outline" className="text-xs">
+                              {subject.name} ({subject.weeklyHours} حصة)
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         <Separator className="my-8" />
@@ -295,7 +453,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                   </Button>
 
                   <Button
-                    onClick={() => onExport('excel')}
+                    onClick={handleExportExcel}
                     type="button"
                     variant="outline"
                     size="lg"
