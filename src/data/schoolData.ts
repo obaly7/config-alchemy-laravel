@@ -210,7 +210,7 @@ export const schoolSetupSteps: StepData[] = [
   },
   {
     id: 'halls_facilities',
-    stepNumber: 5,
+    stepNumber: '5',
     title: 'القاعات والمرافق',
     description: 'حدد أنواع القاعات والمرافق المتوفرة في المدرسة وقم بتعريف القاعات الفعلية',
     icon: '🏢',
@@ -657,12 +657,15 @@ export const schoolSetupSteps: StepData[] = [
   },
   {
     id: 'grade_curriculum',
-    stepNumber: 14,
+    stepNumber: '18',
     title: 'الخطة الدراسية لكل صف',
+    titleEn: 'Curriculum Plan for Each Grade',
     description: 'حدد المواد المقررة وتفاصيل التقييم لكل صف دراسي',
+    descriptionEn: 'Define curriculum subjects and assessment details for each grade',
     icon: '📋',
+    color: 'indigo',
     multiSelect: true,
-    color: 'indigo'
+    allowOther: false
   }
 ];
 

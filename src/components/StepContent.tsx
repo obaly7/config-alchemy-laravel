@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -21,6 +22,54 @@ const StepContent = ({ step, selectedValues, onSelectionChange, wizardData }: St
   const [otherValue, setOtherValue] = useState('');
   const [classrooms, setClassrooms] = useState<ClassroomData[]>([]);
   const [curriculumData, setCurriculumData] = useState<GradeCurriculumData[]>([]);
+
+  const colorClasses_typed = colorClasses as { [key: string]: { card: string; selected: string; text: string } };
+  const stepColors = step.color ? colorClasses_typed[step.color] : colorClasses_typed['blue'];
+
+  const handleOptionToggle = (optionId: string) => {
+    if (step.multiSelect) {
+      const newSelection = selectedValues.includes(optionId)
+        ? selectedValues.filter(id => id !== optionId)
+        : [...selectedValues, optionId];
+      onSelectionChange(newSelection);
+    } else {
+      onSelectionChange([optionId]);
+    }
+  };
+
+  const handleCustomValueChange = (fieldId: string, value: string) => {
+    setCustomValues(prev => ({ ...prev, [fieldId]: value }));
+    
+    // For form fields, we store the value directly
+    const fieldKey = `${step.id}_${fieldId}`;
+    const newSelection = selectedValues.includes(fieldKey)
+      ? selectedValues.filter(id => id !== fieldKey)
+      : [...selectedValues.filter(id => !id.startsWith(`${step.id}_${fieldId}`)), fieldKey];
+    
+    onSelectionChange(newSelection);
+  };
+
+  const handleOtherSubmit = () => {
+    if (otherValue.trim()) {
+      const otherId = `other_${Date.now()}`;
+      const newSelection = step.multiSelect 
+        ? [...selectedValues, otherId]
+        : [otherId];
+      onSelectionChange(newSelection);
+      setCustomValues(prev => ({ ...prev, [otherId]: otherValue.trim() }));
+      setOtherValue('');
+    }
+  };
+
+  const removeCustomValue = (valueId: string) => {
+    const newSelection = selectedValues.filter(id => id !== valueId);
+    onSelectionChange(newSelection);
+    setCustomValues(prev => {
+      const newCustomValues = { ...prev };
+      delete newCustomValues[valueId];
+      return newCustomValues;
+    });
+  };
 
   // Handle teaching plans step specially
   if (step.id === 'teaching_plans_by_grade') {
@@ -48,8 +97,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange, wizardData }: St
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {step.options.map((option) => {
                 const isSelected = selectedValues.includes(option.id);
-                const colorClasses_typed = colorClasses as { [key: string]: { card: string; selected: string; text: string } };
-                const stepColors = step.color ? colorClasses_typed[step.color] : colorClasses_typed['blue'];
                 
                 return (
                   <Card
@@ -120,54 +167,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange, wizardData }: St
       />
     );
   }
-
-  const colorClasses_typed = colorClasses as { [key: string]: { card: string; selected: string; text: string } };
-  const stepColors = step.color ? colorClasses_typed[step.color] : colorClasses_typed['blue'];
-
-  const handleOptionToggle = (optionId: string) => {
-    if (step.multiSelect) {
-      const newSelection = selectedValues.includes(optionId)
-        ? selectedValues.filter(id => id !== optionId)
-        : [...selectedValues, optionId];
-      onSelectionChange(newSelection);
-    } else {
-      onSelectionChange([optionId]);
-    }
-  };
-
-  const handleCustomValueChange = (fieldId: string, value: string) => {
-    setCustomValues(prev => ({ ...prev, [fieldId]: value }));
-    
-    // For form fields, we store the value directly
-    const fieldKey = `${step.id}_${fieldId}`;
-    const newSelection = selectedValues.includes(fieldKey)
-      ? selectedValues.filter(id => id !== fieldKey)
-      : [...selectedValues.filter(id => !id.startsWith(`${step.id}_${fieldId}`)), fieldKey];
-    
-    onSelectionChange(newSelection);
-  };
-
-  const handleOtherSubmit = () => {
-    if (otherValue.trim()) {
-      const otherId = `other_${Date.now()}`;
-      const newSelection = step.multiSelect 
-        ? [...selectedValues, otherId]
-        : [otherId];
-      onSelectionChange(newSelection);
-      setCustomValues(prev => ({ ...prev, [otherId]: otherValue.trim() }));
-      setOtherValue('');
-    }
-  };
-
-  const removeCustomValue = (valueId: string) => {
-    const newSelection = selectedValues.filter(id => id !== valueId);
-    onSelectionChange(newSelection);
-    setCustomValues(prev => {
-      const newCustomValues = { ...prev };
-      delete newCustomValues[valueId];
-      return newCustomValues;
-    });
-  };
 
   // Form Fields
   if (step.fields) {
