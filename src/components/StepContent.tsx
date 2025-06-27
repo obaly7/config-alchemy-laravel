@@ -17,17 +17,37 @@ interface StepContentProps {
 const StepContent = ({ step, selectedValues, onSelectionChange, wizardData }: StepContentProps) => {
   const [curriculumData, setCurriculumData] = useState<GradeCurriculumData[]>([]);
 
-  // Handle teaching plans step specially
-  if (step.id === 'teaching_plans_by_grade') {
+  // Handle merged teaching plans and curriculum step
+  if (step.id === 'teaching_plans_curriculum') {
+    const selectedGrades = wizardData?.grade_levels || [];
     return (
-      <TeachingPlanStep
-        selectedGrades={selectedValues}
-        onDataChange={(gradePlans) => {
-          // Convert grade plans to simple array format for compatibility
-          const gradeIds = gradePlans.map(plan => plan.gradeId);
-          onSelectionChange(gradeIds);
-        }}
-      />
+      <div className="space-y-8">
+        {/* First show the grade selection options */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4 text-tanween-primary">
+            اختر المراحل الدراسية لإعداد الخطط التدريسية والمناهج
+          </h3>
+          <OptionBasedStep
+            step={step}
+            selectedValues={selectedValues}
+            onSelectionChange={onSelectionChange}
+          />
+        </div>
+
+        {/* Then show the detailed curriculum setup for selected grades */}
+        {selectedValues.length > 0 && (
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4 text-tanween-primary">
+              تفاصيل المناهج والخطط التدريسية
+            </h3>
+            <GradeCurriculumStep
+              selectedGrades={selectedValues}
+              curriculumData={curriculumData}
+              onCurriculumChange={setCurriculumData}
+            />
+          </div>
+        )}
+      </div>
     );
   }
 
@@ -38,18 +58,6 @@ const StepContent = ({ step, selectedValues, onSelectionChange, wizardData }: St
         step={step}
         selectedValues={selectedValues}
         onSelectionChange={onSelectionChange}
-      />
-    );
-  }
-
-  // Handle grade curriculum step
-  if (step.id === 'grade_curriculum') {
-    const selectedGrades = wizardData?.educational_levels || [];
-    return (
-      <GradeCurriculumStep
-        selectedGrades={selectedGrades}
-        curriculumData={curriculumData}
-        onCurriculumChange={setCurriculumData}
       />
     );
   }
