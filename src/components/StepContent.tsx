@@ -4,18 +4,23 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { StepData, colorClasses } from '@/data/schoolData';
+import { StepData, colorClasses, ClassroomData, GradeCurriculumData } from '@/data/schoolData';
 import TeachingPlanStep from './TeachingPlanStep';
+import ClassroomManagementStep from './ClassroomManagementStep';
+import GradeCurriculumStep from './GradeCurriculumStep';
 
 interface StepContentProps {
   step: StepData;
   selectedValues: string[];
   onSelectionChange: (values: string[]) => void;
+  wizardData?: any; // For accessing other step data
 }
 
-const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentProps) => {
+const StepContent = ({ step, selectedValues, onSelectionChange, wizardData }: StepContentProps) => {
   const [customValues, setCustomValues] = useState<{ [key: string]: string }>({});
   const [otherValue, setOtherValue] = useState('');
+  const [classrooms, setClassrooms] = useState<ClassroomData[]>([]);
+  const [curriculumData, setCurriculumData] = useState<GradeCurriculumData[]>([]);
 
   // Handle teaching plans step specially
   if (step.id === 'teaching_plans_by_grade') {
@@ -27,6 +32,91 @@ const StepContent = ({ step, selectedValues, onSelectionChange }: StepContentPro
           const gradeIds = gradePlans.map(plan => plan.gradeId);
           onSelectionChange(gradeIds);
         }}
+      />
+    );
+  }
+
+  // Handle halls and facilities step with classroom management
+  if (step.id === 'halls_facilities') {
+    return (
+      <div className="space-y-8">
+        {/* Original hall types selection */}
+        <div className="space-y-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">أنواع القاعات والمرافق المتوفرة</h3>
+          
+          {step.options && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {step.options.map((option) => {
+                const isSelected = selectedValues.includes(option.id);
+                const colorClasses_typed = colorClasses as { [key: string]: { card: string; selected: string; text: string } };
+                const stepColors = step.color ? colorClasses_typed[step.color] : colorClasses_typed['blue'];
+                
+                return (
+                  <Card
+                    key={option.id}
+                    className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+                      isSelected ? stepColors.selected : stepColors.card
+                    }`}
+                    onClick={() => handleOptionToggle(option.id)}
+                  >
+                    <CardContent className="p-4 text-center">
+                      {option.icon && (
+                        <div className="text-2xl mb-2">{option.icon}</div>
+                      )}
+                      <h3 className={`font-semibold ${isSelected ? stepColors.text : 'text-gray-800'}`}>
+                        {option.label}
+                      </h3>
+                      {option.description && (
+                        <p className="text-sm text-gray-600 mt-1">{option.description}</p>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Add Other Option */}
+          {step.allowOther && (
+            <Card className="border-dashed border-2 border-gray-300">
+              <CardContent className="p-4">
+                <h4 className="font-semibold text-gray-800 mb-3">إضافة خيار آخر:</h4>
+                <div className="flex gap-2">
+                  <Input
+                    value={otherValue}
+                    onChange={(e) => setOtherValue(e.target.value)}
+                    placeholder="اكتب خيار جديد..."
+                    className="flex-1 text-right"
+                    dir="rtl"
+                    onKeyPress={(e) => e.key === 'Enter' && handleOtherSubmit()}
+                  />
+                  <Button onClick={handleOtherSubmit} disabled={!otherValue.trim()}>
+                    إضافة
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        {/* Classroom Management Section */}
+        <ClassroomManagementStep
+          selectedHallTypes={selectedValues}
+          classrooms={classrooms}
+          onClassroomsChange={setClassrooms}
+        />
+      </div>
+    );
+  }
+
+  // Handle grade curriculum step
+  if (step.id === 'grade_curriculum') {
+    const selectedGrades = wizardData?.educational_levels || [];
+    return (
+      <GradeCurriculumStep
+        selectedGrades={selectedGrades}
+        curriculumData={curriculumData}
+        onCurriculumChange={setCurriculumData}
       />
     );
   }

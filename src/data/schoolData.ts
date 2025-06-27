@@ -35,6 +35,39 @@ export interface StepData {
   }[];
 }
 
+export interface ClassroomData {
+  id: string;
+  name: string;
+  buildingId: string;
+  typeId: string;
+}
+
+export interface SubjectData {
+  id: string;
+  name: string;
+  weeklyHours: number;
+  maxGrade: number;
+  passingGrade: number;
+  type: 'أساسية' | 'إثرائية';
+  isFailureSubject: boolean;
+  assessmentComponents: AssessmentComponentData[];
+}
+
+export interface AssessmentComponentData {
+  id: string;
+  name: string;
+  includeInFinal: boolean;
+  repetitions: number;
+  allRepetitionsRequired: boolean;
+  grade: number;
+  percentage: number;
+}
+
+export interface GradeCurriculumData {
+  gradeId: string;
+  subjects: SubjectData[];
+}
+
 export const colorClasses = {
   blue: {
     card: 'border-tanween-secondary/30 bg-tanween-secondary/5',
@@ -176,47 +209,25 @@ export const schoolSetupSteps: StepData[] = [
     ]
   },
   {
-    id: 'facilities',
-    stepNumber: '5',
-    title: '5- القاعات والمرافق',
-    titleEn: 'Halls and Facilities',
-    description: 'تحديد القاعات والمرافق المتاحة في المدرسة',
-    descriptionEn: 'Define available halls and facilities in the school',
-    icon: '🏛️',
-    color: 'purple',
+    id: 'halls_facilities',
+    stepNumber: 5,
+    title: 'القاعات والمرافق',
+    description: 'حدد أنواع القاعات والمرافق المتوفرة في المدرسة وقم بتعريف القاعات الفعلية',
+    icon: '🏢',
     multiSelect: true,
+    color: 'purple',
     allowOther: true,
     options: [
-      { id: 'medical_clinic', label: 'عيادة طبية', labelEn: 'Medical Clinic', icon: '🏥' },
-      { id: 'teachers_lounge', label: 'غرفة استراحة المعلمين', labelEn: 'Teachers Lounge', icon: '☕' },
-      { id: 'security_room', label: 'غرفة الأمن والحماية', labelEn: 'Security Room', icon: '🛡️' },
-      { id: 'activities_room', label: 'غرفة الأنشطة اللاصفية', labelEn: 'Extracurricular Activities Room', icon: '🎨' },
-      { id: 'counseling_room', label: 'غرفة الإرشاد النفسي', labelEn: 'Counseling Room', icon: '🧠' },
-      { id: 'meeting_room', label: 'غرفة الاجتماعات', labelEn: 'Meeting Room', icon: '👥' },
-      { id: 'waiting_room', label: 'غرفة الانتظار', labelEn: 'Waiting Room', icon: '⏰' },
-      { id: 'control_room', label: 'غرفة التحكم والمراقبة', labelEn: 'Control and Monitoring Room', icon: '📹' },
-      { id: 'server_room', label: 'غرفة الخوادم', labelEn: 'Server Room', icon: '💻' },
-      { id: 'learning_resources', label: 'غرفة مصادر تعلم', labelEn: 'Learning Resources Room', icon: '📚' },
-      { id: 'activities_hall', label: 'قاعة أنشطة', labelEn: 'Activities Hall', icon: '🎭' },
-      { id: 'training_hall', label: 'قاعة تدريب', labelEn: 'Training Hall', icon: '💪' },
-      { id: 'computer_lab', label: 'قاعة حاسوب', labelEn: 'Computer Lab', icon: '💻' },
-      { id: 'gym', label: 'قاعة رياضية داخلية', labelEn: 'Indoor Gym', icon: '🏃' },
-      { id: 'classroom', label: 'قاعة صفية', labelEn: 'Classroom', icon: '📝' },
-      { id: 'arts_room', label: 'قاعة فنون', labelEn: 'Arts Room', icon: '🎨' },
-      { id: 'music_room', label: 'قاعة موسيقى', labelEn: 'Music Room', icon: '🎵' },
-      { id: 'cafeteria', label: 'كافتيريا', labelEn: 'Cafeteria', icon: '🍽️' },
-      { id: 'biology_lab', label: 'مختبر أحياء', labelEn: 'Biology Lab', icon: '🧬' },
-      { id: 'science_lab', label: 'مختبر علوم', labelEn: 'Science Lab', icon: '🔬' },
-      { id: 'physics_lab', label: 'مختبر فيزياء', labelEn: 'Physics Lab', icon: '⚛️' },
-      { id: 'chemistry_lab', label: 'مختبر كيمياء', labelEn: 'Chemistry Lab', icon: '🧪' },
-      { id: 'swimming_pool', label: 'مسبح', labelEn: 'Swimming Pool', icon: '🏊' },
-      { id: 'theater', label: 'مسرح', labelEn: 'Theater', icon: '🎭' },
-      { id: 'prayer_room', label: 'مصلى', labelEn: 'Prayer Room', icon: '🕌' },
-      { id: 'principal_office', label: 'مكتب المدير', labelEn: 'Principal Office', icon: '👔' },
-      { id: 'vice_principal_office', label: 'مكتب الوكيل', labelEn: 'Vice Principal Office', icon: '📋' },
-      { id: 'library', label: 'مكتبة', labelEn: 'Library', icon: '📚' },
-      { id: 'outdoor_playground', label: 'ملعب خارجي', labelEn: 'Outdoor Playground', icon: '⚽' },
-      { id: 'bus_stop', label: 'موقف الحافلات', labelEn: 'Bus Stop', icon: '🚌' }
+      { id: 'classroom', label: 'قاعات دراسية', icon: '📚', description: 'قاعات التدريس العادية' },
+      { id: 'lab', label: 'مختبرات', icon: '🔬', description: 'مختبرات العلوم والحاسوب' },
+      { id: 'library', label: 'مكتبة', icon: '📖', description: 'مكتبة المدرسة' },
+      { id: 'gym', label: 'صالة رياضية', icon: '🏃', description: 'صالة الألعاب الرياضية' },
+      { id: 'music_room', label: 'قاعة موسيقى', icon: '🎵', description: 'قاعة تعليم الموسيقى' },
+      { id: 'art_room', label: 'قاعة فنون', icon: '🎨', description: 'قاعة الرسم والفنون' },
+      { id: 'cafeteria', label: 'كافتيريا', icon: '🍽️', description: 'مطعم المدرسة' },
+      { id: 'playground', label: 'ملعب', icon: '⚽', description: 'ملعب المدرسة' },
+      { id: 'admin_offices', label: 'مكاتب إدارية', icon: '🏢', description: 'مكاتب الإدارة المدرسية' },
+      { id: 'teachers_room', label: 'غرفة المعلمين', icon: '👨‍🏫', description: 'غرفة استراحة المعلمين' }
     ]
   },
   {
@@ -538,7 +549,7 @@ export const schoolSetupSteps: StepData[] = [
       { id: 'leadership_privileges', label: 'منحه صلاحيات قيادية', labelEn: 'Grant leadership privileges', icon: '👑' },
       { id: 'activity_organization', label: 'منحه فرصة تنظيم نشاط مدرسي', labelEn: 'Opportunity to organize school activity', icon: '🎯' },
       { id: 'encouragement_voucher', label: 'منحه قسيمة تشجيعية', labelEn: 'Grant encouragement voucher', icon: '🎫' },
-      { id: 'book_reward', label: 'منحه كتاباً كمكافأة', labelEn: 'Grant a book as reward', icon: '📖' },
+      { id: 'book_reward', label: 'منحه كتاباً ككافأة', labelEn: 'Grant a book as reward', icon: '📖' },
       { id: 'daily_star', label: 'منحه نجمة سلوكية يومية', labelEn: 'Grant daily behavioral star', icon: '⭐' },
       { id: 'favorite_activities_time', label: 'منحه وقتاً للأنشطة المحببة', labelEn: 'Time for favorite activities', icon: '⏰' },
       { id: 'social_media_feature', label: 'نشر إنجازه في وسائل التواصل المدرسية', labelEn: 'Feature achievement on school social media', icon: '📱' },
@@ -643,5 +654,51 @@ export const schoolSetupSteps: StepData[] = [
       { id: 'grade11_plan', label: 'خطة الصف الحادي عشر الثانوي', labelEn: 'Grade 11 High School Plan', icon: '📚' },
       { id: 'grade12_plan', label: 'خطة البكالوريا', labelEn: 'Baccalaureate Plan', icon: '🎓' }
     ]
+  },
+  {
+    id: 'grade_curriculum',
+    stepNumber: 14,
+    title: 'الخطة الدراسية لكل صف',
+    description: 'حدد المواد المقررة وتفاصيل التقييم لكل صف دراسي',
+    icon: '📋',
+    multiSelect: true,
+    color: 'indigo'
   }
+];
+
+// Predefined data for dropdowns
+export const buildingsList = [
+  { id: 'main_building', label: 'المبنى الرئيسي' },
+  { id: 'secondary_building', label: 'المبنى الثانوي' },
+  { id: 'admin_building', label: 'المبنى الإداري' },
+  { id: 'sports_building', label: 'المبنى الرياضي' }
+];
+
+export const subjectsList = [
+  { id: 'arabic', label: 'اللغة العربية' },
+  { id: 'english', label: 'اللغة الإنجليزية' },
+  { id: 'french', label: 'اللغة الفرنسية' },
+  { id: 'math', label: 'الرياضيات' },
+  { id: 'science', label: 'العلوم' },
+  { id: 'physics', label: 'الفيزياء' },
+  { id: 'chemistry', label: 'الكيمياء' },
+  { id: 'biology', label: 'الأحياء' },
+  { id: 'history', label: 'التاريخ' },
+  { id: 'geography', label: 'الجغرافيا' },
+  { id: 'islamic_studies', label: 'التربية الإسلامية' },
+  { id: 'computer', label: 'الحاسوب' },
+  { id: 'art', label: 'التربية الفنية' },
+  { id: 'music', label: 'التربية الموسيقية' },
+  { id: 'sports', label: 'التربية الرياضية' }
+];
+
+export const assessmentComponentsList = [
+  { id: 'exam', label: 'امتحان' },
+  { id: 'quiz', label: 'مذاكرة' },
+  { id: 'homework', label: 'واجبات منزلية' },
+  { id: 'participation', label: 'مشاركة' },
+  { id: 'project', label: 'مشروع' },
+  { id: 'presentation', label: 'عرض تقديمي' },
+  { id: 'practical', label: 'تطبيق عملي' },
+  { id: 'recitation', label: 'تسميع' }
 ];

@@ -275,6 +275,7 @@ const SchoolWizard = () => {
               step={currentStepData}
               selectedValues={wizardData[currentStepData.id] || []}
               onSelectionChange={(values) => handleStepDataChange(currentStepData.id, values)}
+              wizardData={wizardData}
             />
             
             {/* School Images Upload - Show only on first step */}
