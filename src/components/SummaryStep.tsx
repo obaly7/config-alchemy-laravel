@@ -66,9 +66,9 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
     return Object.keys(wizardData).filter(stepId => wizardData[stepId].length > 0).length;
   };
 
-  // Enhanced export function to include curriculum data
+  // Enhanced export function to include all data including form fields
   const handleExportExcel = () => {
-    console.log('Starting Excel export with curriculum data...');
+    console.log('Starting Excel export with all data including form fields...');
     
     const workbook = XLSX.utils.book_new();
     
@@ -81,21 +81,60 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
     summaryData.push(['وقت الإعداد (دقائق)', Math.floor((currentTime - startTime) / 60000)]);
     summaryData.push(['']);
 
-    // Add regular step data
+    // Add data from all steps - including form fields
     schoolSetupSteps.forEach((step) => {
       const stepData = getStepData(step.id);
       if (stepData.length > 0) {
         summaryData.push([step.title, '']);
-        stepData.forEach((optionId) => {
-          const { label } = getOptionLabel(step.id, optionId);
-          summaryData.push(['', label]);
-        });
+        
+        // Handle form fields data (like general school information)
+        if (step.fields) {
+          step.fields.forEach((field) => {
+            const fieldData = stepData.find(data => data.includes(field.id));
+            if (fieldData) {
+              // Extract the value from the field data
+              const value = fieldData.split(':')[1]?.trim() || fieldData;
+              summaryData.push([field.label, value]);
+            }
+          });
+        } else {
+          // Handle option-based data
+          stepData.forEach((optionId) => {
+            const { label } = getOptionLabel(step.id, optionId);
+            summaryData.push(['', label]);
+          });
+        }
         summaryData.push(['']);
       }
     });
 
     const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
     XLSX.utils.book_append_sheet(workbook, summarySheet, 'ملخص البيانات');
+
+    // General School Information detailed sheet
+    const generalInfoStep = schoolSetupSteps.find(step => step.id === 'general_info');
+    const generalInfoData = getStepData('general_info');
+    
+    if (generalInfoStep && generalInfoData.length > 0) {
+      const generalInfoSheetData = [];
+      generalInfoSheetData.push(['المعلومات العامة حول المدرسة', '']);
+      generalInfoSheetData.push(['']);
+      
+      if (generalInfoStep.fields) {
+        generalInfoStep.fields.forEach((field) => {
+          const fieldData = generalInfoData.find(data => data.includes(field.id));
+          if (fieldData) {
+            const value = fieldData.split(':')[1]?.trim() || fieldData;
+            generalInfoSheetData.push([field.label, value]);
+          } else {
+            generalInfoSheetData.push([field.label, 'لم يتم الإدخال']);
+          }
+        });
+      }
+      
+      const generalInfoSheet = XLSX.utils.aoa_to_sheet(generalInfoSheetData);
+      XLSX.utils.book_append_sheet(workbook, generalInfoSheet, 'المعلومات العامة');
+    }
 
     // Teaching Plans and Curriculum Sheet
     const curriculumData = wizardData.curriculumData || [];
@@ -163,11 +202,24 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
       detailedData.push(['الحالة:', stepData.length > 0 ? 'مكتمل' : 'غير مكتمل']);
       
       if (stepData.length > 0) {
-        detailedData.push(['الخيارات المختارة:', '']);
-        stepData.forEach((optionId) => {
-          const { label } = getOptionLabel(step.id, optionId);
-          detailedData.push(['', `• ${label}`]);
-        });
+        detailedData.push(['البيانات المدخلة:', '']);
+        
+        if (step.fields) {
+          // Handle form fields
+          step.fields.forEach((field) => {
+            const fieldData = stepData.find(data => data.includes(field.id));
+            if (fieldData) {
+              const value = fieldData.split(':')[1]?.trim() || fieldData;
+              detailedData.push(['', `${field.label}: ${value}`]);
+            }
+          });
+        } else {
+          // Handle options
+          stepData.forEach((optionId) => {
+            const { label } = getOptionLabel(step.id, optionId);
+            detailedData.push(['', `• ${label}`]);
+          });
+        }
       }
       
       detailedData.push(['']);
@@ -180,7 +232,7 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
     const fileName = `إعداد_المدرسة_${new Date().toISOString().split('T')[0]}.xlsx`;
     XLSX.writeFile(workbook, fileName);
     
-    console.log('Excel export completed with curriculum data');
+    console.log('Excel export completed with all data including general school information');
   };
 
   return (
