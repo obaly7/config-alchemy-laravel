@@ -90,10 +90,10 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
         // Handle form fields data (like general school information)
         if (step.fields) {
           step.fields.forEach((field) => {
-            const fieldData = stepData.find(data => data.includes(field.id));
+            const fieldData = stepData.find(data => data.startsWith(`${field.id}:`));
             if (fieldData) {
-              // Extract the value from the field data
-              const value = fieldData.split(':')[1]?.trim() || fieldData;
+              // Extract the value after the colon
+              const value = fieldData.substring(fieldData.indexOf(':') + 1).trim();
               summaryData.push([field.label, value]);
             }
           });
@@ -122,9 +122,9 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
       
       if (generalInfoStep.fields) {
         generalInfoStep.fields.forEach((field) => {
-          const fieldData = generalInfoData.find(data => data.includes(field.id));
+          const fieldData = generalInfoData.find(data => data.startsWith(`${field.id}:`));
           if (fieldData) {
-            const value = fieldData.split(':')[1]?.trim() || fieldData;
+            const value = fieldData.substring(fieldData.indexOf(':') + 1).trim();
             generalInfoSheetData.push([field.label, value]);
           } else {
             generalInfoSheetData.push([field.label, 'لم يتم الإدخال']);
@@ -207,9 +207,9 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
         if (step.fields) {
           // Handle form fields
           step.fields.forEach((field) => {
-            const fieldData = stepData.find(data => data.includes(field.id));
+            const fieldData = stepData.find(data => data.startsWith(`${field.id}:`));
             if (fieldData) {
-              const value = fieldData.split(':')[1]?.trim() || fieldData;
+              const value = fieldData.substring(fieldData.indexOf(':') + 1).trim();
               detailedData.push(['', `${field.label}: ${value}`]);
             }
           });
@@ -312,18 +312,34 @@ const SummaryStep = ({ wizardData, onEdit, onSave, onExport, onSendEmail, onBack
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {stepData.map((optionId) => {
-                      const { label, icon } = getOptionLabel(step.id, optionId);
-                      return (
-                        <Badge 
-                          key={optionId}
-                          variant="secondary"
-                          className="flex items-center gap-1 py-2 px-3"
-                        >
-                          {icon && <span>{icon}</span>}
-                          {label}
-                        </Badge>
-                      );
+                    {stepData.map((dataItem, idx) => {
+                      // Handle form field data
+                      if (step.fields && dataItem.includes(':')) {
+                        const [fieldId, value] = dataItem.split(':');
+                        const field = step.fields.find(f => f.id === fieldId);
+                        return (
+                          <Badge 
+                            key={idx}
+                            variant="secondary"
+                            className="flex items-center gap-1 py-2 px-3"
+                          >
+                            {field?.label}: {value}
+                          </Badge>
+                        );
+                      } else {
+                        // Handle option-based data
+                        const { label, icon } = getOptionLabel(step.id, dataItem);
+                        return (
+                          <Badge 
+                            key={idx}
+                            variant="secondary"
+                            className="flex items-center gap-1 py-2 px-3"
+                          >
+                            {icon && <span>{icon}</span>}
+                            {label}
+                          </Badge>
+                        );
+                      }
                     })}
                   </div>
                 </CardContent>

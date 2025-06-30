@@ -16,11 +16,12 @@ const FormFieldsStep = ({ step, selectedValues, onSelectionChange }: FormFieldsS
   const handleCustomValueChange = (fieldId: string, value: string) => {
     setCustomValues(prev => ({ ...prev, [fieldId]: value }));
     
-    // For form fields, we store the value directly
-    const fieldKey = `${step.id}_${fieldId}`;
-    const newSelection = selectedValues.includes(fieldKey)
-      ? selectedValues.filter(id => id !== fieldKey)
-      : [...selectedValues.filter(id => !id.startsWith(`${step.id}_${fieldId}`)), fieldKey];
+    // Store the field data with the proper format: fieldId:value
+    const fieldKey = `${fieldId}:${value}`;
+    
+    // Remove any existing entries for this field and add the new one
+    const filteredValues = selectedValues.filter(val => !val.startsWith(`${fieldId}:`));
+    const newSelection = value.trim() ? [...filteredValues, fieldKey] : filteredValues;
     
     onSelectionChange(newSelection);
   };
