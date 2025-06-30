@@ -182,7 +182,13 @@ const SchoolWizard = () => {
 
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="text-4xl mb-3">✨</div>
+          <div className="mb-3">
+            <img 
+              src="/lovable-uploads/9ea211a9-a287-4d22-aa31-bc228249ee8a.png" 
+              alt="Tanween Logo" 
+              className="w-24 h-auto mx-auto"
+            />
+          </div>
           <h1 className="text-4xl font-bold text-white mb-3 drop-shadow-lg">
             تنوين
           </h1>
@@ -196,7 +202,6 @@ const SchoolWizard = () => {
             مرحباً بك! سنقوم معاً بإعداد بيانات مدرستك خطوة بخطوة بطريقة سهلة وممتعة فلنبدأ
           </p>
         </div>
-
 
         {/* Progress Section */}
         <Card className="mb-8 bg-white/95 backdrop-blur-sm border-white/20 shadow-xl">
