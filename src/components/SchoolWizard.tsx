@@ -7,18 +7,18 @@ import { useToast } from '@/hooks/use-toast';
 import { schoolSetupSteps } from '@/data/schoolData';
 import StepContent from './StepContent';
 import SummaryStep from './SummaryStep';
-
 export interface WizardData {
   [stepId: string]: string[];
 }
-
 const SchoolWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [wizardData, setWizardData] = useState<WizardData>({});
   const [isCompleted, setIsCompleted] = useState(false);
   const [startTime] = useState(Date.now());
   const [currentTime, setCurrentTime] = useState(Date.now());
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
 
   // Timer effect
   useEffect(() => {
@@ -27,17 +27,14 @@ const SchoolWizard = () => {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
-
   const totalSteps = schoolSetupSteps.length;
-  const progress = ((currentStep + 1) / totalSteps) * 100;
-
+  const progress = (currentStep + 1) / totalSteps * 100;
   const handleStepDataChange = (stepId: string, selectedValues: string[]) => {
     setWizardData(prev => ({
       ...prev,
       [stepId]: selectedValues
     }));
   };
-
   const goToNextStep = () => {
     if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
@@ -45,38 +42,36 @@ const SchoolWizard = () => {
       setIsCompleted(true);
     }
   };
-
   const goToPreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
-
   const goToStep = (stepIndex: number) => {
     setCurrentStep(stepIndex);
     setIsCompleted(false);
   };
-
   const isStepCompleted = (stepIndex: number): boolean => {
     const step = schoolSetupSteps[stepIndex];
     const stepData = wizardData[step.id];
     return stepData && stepData.length > 0;
   };
-
   const canProceed = (): boolean => {
     const currentStepData = schoolSetupSteps[currentStep];
     const selectedData = wizardData[currentStepData.id];
     return selectedData && selectedData.length > 0;
   };
-
   const handleSaveData = () => {
     toast({
       title: "تم الحفظ بنجاح",
       description: "تم حفظ بيانات المدرسة بنجاح"
     });
   };
-
-  const handleSendEmail = (userInfo: {name: string, phone: string, email: string}) => {
+  const handleSendEmail = (userInfo: {
+    name: string;
+    phone: string;
+    email: string;
+  }) => {
     // Here we would typically send the data to an API endpoint
     // For now, we'll just show a success message
     toast({
@@ -84,11 +79,12 @@ const SchoolWizard = () => {
       description: `تم إرسال البيانات إلى ${userInfo.email} بنجاح`
     });
   };
-
   const handleExportData = (format: 'json' | 'excel' | 'pdf') => {
     if (format === 'json') {
       const dataStr = JSON.stringify(wizardData, null, 2);
-      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const dataBlob = new Blob([dataStr], {
+        type: 'application/json'
+      });
       const url = URL.createObjectURL(dataBlob);
       const link = document.createElement('a');
       link.href = url;
@@ -102,23 +98,20 @@ const SchoolWizard = () => {
     } else if (format === 'pdf') {
       window.print();
     }
-    
     toast({
       title: "تم التصدير",
       description: `تم تصدير البيانات بصيغة ${format === 'json' ? 'JSON' : format === 'excel' ? 'Excel' : 'PDF'}`
     });
   };
-
   const handleExportToExcel = async () => {
     try {
       const XLSX = await import('xlsx');
-      
+
       // Create workbook
       const workbook = XLSX.utils.book_new();
-      
+
       // Prepare data for Excel
       const excelData: any[] = [];
-      
       schoolSetupSteps.forEach((step, stepIndex) => {
         const stepData = wizardData[step.id] || [];
         if (stepData.length > 0) {
@@ -136,13 +129,12 @@ const SchoolWizard = () => {
 
       // Create worksheet
       const worksheet = XLSX.utils.json_to_sheet(excelData);
-      
+
       // Add worksheet to workbook
       XLSX.utils.book_append_sheet(workbook, worksheet, 'بيانات المدرسة');
-      
+
       // Generate Excel file and download
       XLSX.writeFile(workbook, 'school_data.xlsx');
-      
     } catch (error) {
       toast({
         title: "خطأ في التصدير",
@@ -150,28 +142,13 @@ const SchoolWizard = () => {
       });
     }
   };
-
   if (isCompleted) {
-    return (
-      <SummaryStep
-        wizardData={wizardData}
-        onEdit={goToStep}
-        onSave={handleSaveData}
-        onExport={handleExportData}
-        onSendEmail={handleSendEmail}
-        onBack={() => setIsCompleted(false)}
-        startTime={startTime}
-      />
-    );
+    return <SummaryStep wizardData={wizardData} onEdit={goToStep} onSave={handleSaveData} onExport={handleExportData} onSendEmail={handleSendEmail} onBack={() => setIsCompleted(false)} startTime={startTime} />;
   }
-
   const currentStepData = schoolSetupSteps[currentStep];
-
   const elapsedMinutes = Math.floor((currentTime - startTime) / 60000);
-  const elapsedSeconds = Math.floor(((currentTime - startTime) % 60000) / 1000);
-
-  return (
-    <div className="min-h-screen tanween-gradient p-4">
+  const elapsedSeconds = Math.floor((currentTime - startTime) % 60000 / 1000);
+  return <div className="min-h-screen tanween-gradient p-4">
       <div className="max-w-6xl mx-auto">
         {/* Timer - Top Corner */}
         <div className="fixed top-4 left-4 z-50 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
@@ -183,11 +160,7 @@ const SchoolWizard = () => {
         {/* Header */}
         <div className="text-center mb-6">
           <div className="mb-3">
-            <img 
-              src="/lovable-uploads/9ea211a9-a287-4d22-aa31-bc228249ee8a.png" 
-              alt="Tanween Logo" 
-              className="w-48 h-auto mx-auto bg-white/10 backdrop-blur-sm rounded-full p-4"
-            />
+            <img alt="Tanween Logo" className="w-48 h-auto mx-auto bg-white/10 backdrop-blur-sm rounded-full p-4" src="/lovable-uploads/241e5ea5-39e8-43d1-9dd4-9c2ba7790aed.jpg" />
           </div>
           <p className="text-lg text-white/90 mb-2 font-medium italic">
             Driving Impact in EdTech
@@ -228,30 +201,14 @@ const SchoolWizard = () => {
 
         {/* Steps Navigation */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8">
-          {schoolSetupSteps.map((step, index) => (
-            <button
-              key={step.id}
-              onClick={() => goToStep(index)}
-              className={`p-3 rounded-lg border-2 transition-all text-center ${
-                index === currentStep
-                  ? 'border-blue-500 bg-blue-100'
-                  : isStepCompleted(index)
-                  ? 'border-green-500 bg-green-100 hover:bg-green-200'
-                  : 'border-gray-200 bg-white hover:bg-gray-50'
-              }`}
-            >
+          {schoolSetupSteps.map((step, index) => <button key={step.id} onClick={() => goToStep(index)} className={`p-3 rounded-lg border-2 transition-all text-center ${index === currentStep ? 'border-blue-500 bg-blue-100' : isStepCompleted(index) ? 'border-green-500 bg-green-100 hover:bg-green-200' : 'border-gray-200 bg-white hover:bg-gray-50'}`}>
               <div className="text-lg mb-1">
-                {isStepCompleted(index) ? (
-                  <CheckCircle className="w-5 h-5 text-green-600 mx-auto" />
-                ) : (
-                  step.icon
-                )}
+                {isStepCompleted(index) ? <CheckCircle className="w-5 h-5 text-green-600 mx-auto" /> : step.icon}
               </div>
               <div className="text-xs font-medium text-gray-700 line-clamp-2">
                 {step.title}
               </div>
-            </button>
-          ))}
+            </button>)}
         </div>
 
         {/* Current Step Content */}
@@ -273,16 +230,10 @@ const SchoolWizard = () => {
             </div>
           </CardHeader>
           <CardContent className="p-6">
-            <StepContent
-              step={currentStepData}
-              selectedValues={wizardData[currentStepData.id] || []}
-              onSelectionChange={(values) => handleStepDataChange(currentStepData.id, values)}
-              wizardData={wizardData}
-            />
+            <StepContent step={currentStepData} selectedValues={wizardData[currentStepData.id] || []} onSelectionChange={values => handleStepDataChange(currentStepData.id, values)} wizardData={wizardData} />
             
             {/* School Images Upload - Show only on first step */}
-            {currentStep === 0 && (
-              <div className="mt-8 pt-6 border-t border-gray-200">
+            {currentStep === 0 && <div className="mt-8 pt-6 border-t border-gray-200">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card className="bg-purple-50/90 border-purple-200 backdrop-blur-sm">
                     <CardContent className="pt-6">
@@ -290,26 +241,16 @@ const SchoolWizard = () => {
                       <div className="border-2 border-dashed border-purple-300 rounded-lg p-6 text-center">
                         <div className="text-4xl mb-2">🏫</div>
                         <p className="text-purple-700 mb-2">انقر لرفع شعار المدرسة (JPG, PNG, GIF)</p>
-                        <input 
-                          type="file" 
-                          accept="image/jpeg,image/png,image/gif,image/webp" 
-                          className="hidden" 
-                          id="school-logo-upload"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              toast({
-                                title: "تم رفع الملف",
-                                description: `تم رفع ${file.name} بنجاح`
-                              });
-                            }
-                          }}
-                        />
-                        <Button 
-                          variant="outline" 
-                          className="border-purple-300 text-purple-700"
-                          onClick={() => document.getElementById('school-logo-upload')?.click()}
-                        >
+                        <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" className="hidden" id="school-logo-upload" onChange={e => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        toast({
+                          title: "تم رفع الملف",
+                          description: `تم رفع ${file.name} بنجاح`
+                        });
+                      }
+                    }} />
+                        <Button variant="outline" className="border-purple-300 text-purple-700" onClick={() => document.getElementById('school-logo-upload')?.click()}>
                           اختيار ملف
                         </Button>
                       </div>
@@ -322,110 +263,61 @@ const SchoolWizard = () => {
                       <div className="border-2 border-dashed border-orange-300 rounded-lg p-6 text-center">
                         <div className="text-4xl mb-2">🖼️</div>
                         <p className="text-orange-700 mb-2">انقر لرفع صورة توضيحية (JPG, PNG, GIF)</p>
-                        <input 
-                          type="file" 
-                          accept="image/jpeg,image/png,image/gif,image/webp" 
-                          className="hidden" 
-                          id="school-image-upload"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              toast({
-                                title: "تم رفع الملف",
-                                description: `تم رفع ${file.name} بنجاح`
-                              });
-                            }
-                          }}
-                        />
-                        <Button 
-                          variant="outline" 
-                          className="border-orange-300 text-orange-700"
-                          onClick={() => document.getElementById('school-image-upload')?.click()}
-                        >
+                        <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" className="hidden" id="school-image-upload" onChange={e => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        toast({
+                          title: "تم رفع الملف",
+                          description: `تم رفع ${file.name} بنجاح`
+                        });
+                      }
+                    }} />
+                        <Button variant="outline" className="border-orange-300 text-orange-700" onClick={() => document.getElementById('school-image-upload')?.click()}>
                           اختيار ملف
                         </Button>
                       </div>
                     </CardContent>
                   </Card>
                 </div>
-              </div>
-            )}
+              </div>}
           </CardContent>
         </Card>
 
         {/* Navigation Buttons */}
         <div className="flex justify-between items-center">
-          <Button
-            onClick={goToPreviousStep}
-            disabled={currentStep === 0}
-            variant="outline"
-            size="lg"
-            className="flex items-center gap-2"
-          >
+          <Button onClick={goToPreviousStep} disabled={currentStep === 0} variant="outline" size="lg" className="flex items-center gap-2">
             <ArrowRight className="w-4 h-4" />
             السابق
           </Button>
 
           <div className="text-center">
             <p className="text-sm text-white mb-2">
-              {canProceed() 
-                ? "يمكنك المتابعة للخطوة التالية" 
-                : "يرجى اختيار خيار واحد على الأقل للمتابعة"
-              }
+              {canProceed() ? "يمكنك المتابعة للخطوة التالية" : "يرجى اختيار خيار واحد على الأقل للمتابعة"}
             </p>
           </div>
 
-          {currentStep === totalSteps - 1 ? (
-            <Button
-              onClick={goToNextStep}
-              disabled={!canProceed()}
-              size="lg"
-              className="flex items-center gap-2"
-            >
+          {currentStep === totalSteps - 1 ? <Button onClick={goToNextStep} disabled={!canProceed()} size="lg" className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4" />
               إنهاء وعرض الملخص
-            </Button>
-          ) : (
-            <Button
-              onClick={goToNextStep}
-              disabled={!canProceed()}
-              size="lg"
-              className="flex items-center gap-2"
-            >
+            </Button> : <Button onClick={goToNextStep} disabled={!canProceed()} size="lg" className="flex items-center gap-2">
               التالي
               <ArrowLeft className="w-4 h-4" />
-            </Button>
-          )}
+            </Button>}
         </div>
 
         {/* Footer with WhatsApp and Company Info */}
         <div className="border-t border-white/20 pt-8 mt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a 
-              href="https://wa.me/963958555801" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
-            >
+            <a href="https://wa.me/963958555801" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
               <span>💬</span>
               مساعدة على الواتساب
             </a>
             <div className="flex items-center gap-4">
-              <a 
-                href="https://www.facebook.com/tanweenapp" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-white hover:text-blue-300 transition-colors flex items-center gap-1"
-              >
+              <a href="https://www.facebook.com/tanweenapp" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-300 transition-colors flex items-center gap-1">
                 <Facebook className="w-4 h-4" />
                 فيسبوك
               </a>
-              <a 
-                href="https://www.instagram.com/tanweenapp/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-white hover:text-pink-300 transition-colors flex items-center gap-1"
-              >
+              <a href="https://www.instagram.com/tanweenapp/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-pink-300 transition-colors flex items-center gap-1">
                 <Instagram className="w-4 h-4" />
                 انستغرام
               </a>
@@ -438,8 +330,6 @@ const SchoolWizard = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default SchoolWizard;
