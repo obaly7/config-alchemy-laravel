@@ -186,12 +186,9 @@ const SchoolWizard = () => {
             <img 
               src="/lovable-uploads/9ea211a9-a287-4d22-aa31-bc228249ee8a.png" 
               alt="Tanween Logo" 
-              className="w-24 h-auto mx-auto"
+              className="w-48 h-auto mx-auto bg-white/10 backdrop-blur-sm rounded-full p-4"
             />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-3 drop-shadow-lg">
-            تنوين
-          </h1>
           <p className="text-lg text-white/90 mb-2 font-medium italic">
             Driving Impact in EdTech
           </p>
