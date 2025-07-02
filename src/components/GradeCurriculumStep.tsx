@@ -336,12 +336,12 @@ const GradeCurriculumStep = ({
                     <label className="block text-sm font-medium mb-2">نوع المادة</label>
                     <select
                       value={activeSubjectData.type}
-                      onChange={(e) => updateSubject(activeGrade, activeSubject, { type: e.target.value as 'أساسية' | 'إثرائية' })}
+                      onChange={(e) => updateSubject(activeGrade, activeSubject, { type: e.target.value as 'أساسية' | 'إثرائيه' })}
                       className="w-full px-3 py-2 border rounded-lg text-right"
                       dir="rtl"
                     >
                       <option value="أساسية">أساسية</option>
-                      <option value="إثرائية">إثرائية</option>
+                      <option value="إثرائيه">إثرائيه</option>
                     </select>
                   </div>
                   
