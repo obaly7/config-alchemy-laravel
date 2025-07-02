@@ -49,7 +49,7 @@ export interface SubjectData {
   weeklyHours: number;
   maxGrade: number;
   passingGrade: number;
-  type: 'أساسية' | 'إثرائية';
+  type: 'أساسية' | 'إثرائيه';
   isFailureSubject: boolean;
   assessmentComponents: AssessmentComponentData[];
 }
