@@ -21,7 +21,7 @@ export const schoolSetupSteps: StepData[] = [
       { id: 'phone2', label: 'رقم الهاتف 2', labelEn: 'Phone Number 2', type: 'phone' },
       { id: 'email', label: 'البريد الإلكتروني', labelEn: 'Email', type: 'email', required: true },
       { id: 'website', label: 'الموقع الإلكتروني', labelEn: 'Website', type: 'text' },
-      { id: 'notes', label: 'ملاحظات إضافية', labelEn: 'Additional Notes', type: 'textarea' }
+      { id: 'notes', label: 'ملاحظات ', labelEn: 'Additional Notes', type: 'textarea' }
     ],
     multiSelect: true,
     allowOther: true,
