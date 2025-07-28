@@ -13,7 +13,9 @@ interface ExportButtonsProps {
 
 const ExportButtons = ({ wizardData, onExport, startTime, currentTime }: ExportButtonsProps) => {
   const handleExportExcel = () => {
+    console.log('Excel export button clicked');
     createExcelExport(wizardData, startTime, currentTime);
+    onExport('excel');
   };
 
   return (
