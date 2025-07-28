@@ -55,9 +55,8 @@ export const createExcelExport = (wizardData: WizardData, startTime: number, cur
   schoolSetupSteps.forEach((step) => {
     const stepData = getStepData(step.id);
     if (stepData.length > 0) {
-      summaryData.push([step.title, '']);
-      
       if (step.fields) {
+        summaryData.push([step.title, '']);
         step.fields.forEach((field) => {
           const fieldData = stepData.find(data => data.startsWith(`${field.id}:`));
           if (fieldData) {
@@ -70,7 +69,7 @@ export const createExcelExport = (wizardData: WizardData, startTime: number, cur
           const { label } = getOptionLabel(step.id, optionId);
           return label;
         }).join(', ');
-        summaryData.push(['الخيارات المختارة', selectedOptions]);
+        summaryData.push([step.title, selectedOptions]);
       }
       summaryData.push(['']);
     }
