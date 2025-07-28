@@ -66,10 +66,11 @@ export const createExcelExport = (wizardData: WizardData, startTime: number, cur
           }
         });
       } else {
-        stepData.forEach((optionId) => {
+        const selectedOptions = stepData.map((optionId) => {
           const { label } = getOptionLabel(step.id, optionId);
-          summaryData.push([label, '']);
-        });
+          return label;
+        }).join(', ');
+        summaryData.push(['الخيارات المختارة', selectedOptions]);
       }
       summaryData.push(['']);
     }
