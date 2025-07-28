@@ -233,53 +233,7 @@ const SchoolWizard = () => {
             <StepContent step={currentStepData} selectedValues={wizardData[currentStepData.id] || []} onSelectionChange={values => handleStepDataChange(currentStepData.id, values)} wizardData={wizardData} />
             
             {/* School Images Upload - Show only on first step */}
-            {currentStep === 0 && <div className="mt-8 pt-6 border-t border-gray-200">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="bg-purple-50/90 border-purple-200 backdrop-blur-sm">
-                    <CardContent className="pt-6">
-                      <h4 className="font-semibold text-purple-900 mb-4 text-center">شعار المدرسة</h4>
-                      <div className="border-2 border-dashed border-purple-300 rounded-lg p-6 text-center">
-                        <div className="text-4xl mb-2">🏫</div>
-                        <p className="text-purple-700 mb-2">انقر لرفع شعار المدرسة (JPG, PNG, GIF)</p>
-                        <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" className="hidden" id="school-logo-upload" onChange={e => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        toast({
-                          title: "تم رفع الملف",
-                          description: `تم رفع ${file.name} بنجاح`
-                        });
-                      }
-                    }} />
-                        <Button variant="outline" className="border-purple-300 text-purple-700" onClick={() => document.getElementById('school-logo-upload')?.click()}>
-                          اختيار ملف
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="bg-orange-50/90 border-orange-200 backdrop-blur-sm">
-                    <CardContent className="pt-6">
-                      <h4 className="font-semibold text-orange-900 mb-4 text-center">صورة توضيحية للمدرسة</h4>
-                      <div className="border-2 border-dashed border-orange-300 rounded-lg p-6 text-center">
-                        <div className="text-4xl mb-2">🖼️</div>
-                        <p className="text-orange-700 mb-2">انقر لرفع صورة توضيحية (JPG, PNG, GIF)</p>
-                        <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" className="hidden" id="school-image-upload" onChange={e => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        toast({
-                          title: "تم رفع الملف",
-                          description: `تم رفع ${file.name} بنجاح`
-                        });
-                      }
-                    }} />
-                        <Button variant="outline" className="border-orange-300 text-orange-700" onClick={() => document.getElementById('school-image-upload')?.click()}>
-                          اختيار ملف
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>}
+            {currentStep === 0}
           </CardContent>
         </Card>
 
