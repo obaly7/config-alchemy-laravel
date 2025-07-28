@@ -65,11 +65,10 @@ export const createExcelExport = (wizardData: WizardData, startTime: number, cur
           }
         });
       } else {
-        const selectedOptions = stepData.map((optionId) => {
+        stepData.forEach((optionId) => {
           const { label } = getOptionLabel(step.id, optionId);
-          return label;
-        }).join(', ');
-        summaryData.push([step.title, selectedOptions]);
+          summaryData.push([step.title, label]);
+        });
       }
       summaryData.push(['']);
     }

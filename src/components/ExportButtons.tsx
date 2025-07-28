@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { FileJson, FileText } from 'lucide-react';
 import { createExcelExport } from './ExcelExporter';
 import { WizardData } from './SchoolWizard';
+import { useToast } from '@/hooks/use-toast';
 
 interface ExportButtonsProps {
   wizardData: WizardData;
@@ -12,9 +13,15 @@ interface ExportButtonsProps {
 }
 
 const ExportButtons = ({ wizardData, onExport, startTime, currentTime }: ExportButtonsProps) => {
+  const { toast } = useToast();
+
   const handleExportExcel = () => {
     console.log('Excel export button clicked');
     createExcelExport(wizardData, startTime, currentTime);
+    toast({
+      title: "تم تصدير الملف بنجاح",
+      description: "تم تصدير بيانات المدرسة إلى ملف Excel بنجاح",
+    });
   };
 
   return (
