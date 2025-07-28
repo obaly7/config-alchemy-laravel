@@ -15,7 +15,6 @@ const ExportButtons = ({ wizardData, onExport, startTime, currentTime }: ExportB
   const handleExportExcel = () => {
     console.log('Excel export button clicked');
     createExcelExport(wizardData, startTime, currentTime);
-    onExport('excel');
   };
 
   return (

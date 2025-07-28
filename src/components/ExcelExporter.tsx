@@ -68,7 +68,7 @@ export const createExcelExport = (wizardData: WizardData, startTime: number, cur
       } else {
         stepData.forEach((optionId) => {
           const { label } = getOptionLabel(step.id, optionId);
-          summaryData.push(['', label]);
+          summaryData.push([label, '']);
         });
       }
       summaryData.push(['']);
